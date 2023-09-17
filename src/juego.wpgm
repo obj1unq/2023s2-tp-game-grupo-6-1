@@ -1,8 +1,21 @@
 import wollok.game.*
-import pepita.*
+import personaje.*
+import armas.*
 
-program juego {
-	game.title("Juego Base")
-	game.addVisual(pepita)
+program main {
+	
+	
+	game.cellSize(80)
+	game.width(15)
+	game.height(10)
+	game.addVisualCharacterIn(doomGuy, game.origin())
+
+	game.addVisual(pistola)
+	game.addVisual(miniGun)
+	game.addVisual(bomba)
+	
+	keyboard.e().onPressDo({doomGuy.agarrar()})
+	keyboard.shift().onPressDo({doomGuy.estadisticas()})
+	
 	game.start()
 }
