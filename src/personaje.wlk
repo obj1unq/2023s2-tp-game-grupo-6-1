@@ -1,5 +1,6 @@
 import armas.*
 import wollok.game.*
+import gameClasses.*
 
 class Personaje {
 
@@ -21,7 +22,9 @@ class Personaje {
 
 	method mover(direccion)
 
-	method sufrirImpacto(danio)
+	method sufrirImpacto(causante)
+
+	method efectoPostImpacto()
 
 	method validarMover(direccion)
 
@@ -34,6 +37,18 @@ class Personaje {
 	method agarrable() {
 		return agarrable
 	}
+
+	method accionPostMuerte()
+
+	method accionDuranteMuerte(fases)
+
+	method accionPostAtaque()
+
+	method accionDuranteAtaque(fases)
+
+	method accionPostMovimiento()
+
+	method accionDuranteMovimiento(fases)
 
 }
 
@@ -53,7 +68,7 @@ object doomGuy inherits Personaje(arma = new Pistola(), estado = 'vivo_abajo_dis
 		const objetosEncontrados = self.devolverObjetosEnPosicion()
 		self.validarSiHayObjetos(objetosEncontrados)
 		self.validarSiEsObjetoAgarrable(objetosEncontrados.first())
-		agarrableManager.asignarObjetoADoomguy(objetosEncontrados.first())
+		objetosEncontrados.first().agarrado(self)
 	}
 
 	method devolverObjetosEnPosicion() {
@@ -76,8 +91,9 @@ object doomGuy inherits Personaje(arma = new Pistola(), estado = 'vivo_abajo_dis
 		return game.say(self, "escudo: " + escudo.toString() + " salud: " + salud.toString() + " arma:" + arma.toString())
 	}
 
-	override method sufrirImpacto(danio) {
-		self.sufreDanio(danio)
+	override method sufrirImpacto(causante) {
+		self.sufreDanio(causante.danio())
+		causante.efectoPostImpacto()
 	}
 
 	override method sufreDanio(_danio) {
@@ -114,7 +130,7 @@ object doomGuy inherits Personaje(arma = new Pistola(), estado = 'vivo_abajo_dis
 	}
 
 	override method personajeHaDeMorir(_danio) {
-		return escudo == 0 && salud > 0 && salud - _danio < 0 
+		return escudo == 0 && salud > 0 && salud - _danio < 0
 	}
 
 	override method morir() {
@@ -122,17 +138,17 @@ object doomGuy inherits Personaje(arma = new Pistola(), estado = 'vivo_abajo_dis
 		puedeMoverse = false
 		self.activarAnimacionMuerte()
 	}
-	
-	override method activarAnimacionMuerte(){
-		var count = 0
-		const fases = (1 .. 7)
-		game.schedule(fases.size() * 100 + 100, {=>
-			game.removeTickEvent("secuenciaMuerte_doomguy")
-		})
-		game.onTick(100, "secuenciaMuerte_doomguy", { self.estado("muerto_" + fases.get(count))
-			count++
-		})
+
+	override method activarAnimacionMuerte() {
+		const animacionMuerte = new AnimacionMuerte()
+		animacionMuerte.animacion((1 .. 7), 100, self)
 	}
+
+	override method accionDuranteMuerte(fases){
+		self.estado("muerto_" + fases.first())
+			fases.remove(fases.first())
+	}
+	
 
 	override method mover(direccion) {
 		const siguiente = direccion.mover(self.position())
@@ -151,30 +167,30 @@ object doomGuy inherits Personaje(arma = new Pistola(), estado = 'vivo_abajo_dis
 	method personajePuedeMoverseA(posicion) {
 		return not enMovimiento && salud > 0 && tablero.pertenece(posicion)
 	}
-	
+
 	method establecerValoresDeCambioDePosicion(direccion) {
 		enMovimiento = true
 		ultimaDireccion = direccion
 	}
-	
+
 	method moverConAnimacion(posicionAMover, direccionAMover) {
 		game.schedule(210, { enMovimiento = false})
 		game.schedule(100, {=> self.position(posicionAMover)})
 		game.schedule(150, {=> self.activarSecuenciaCambioPosicion(direccionAMover, [ 2, "normal", "disparando" ])})
 	}
-	
+
 	method activarSecuenciaCambioPosicion(direccion, fases) {
-		game.schedule(fases.size() * 50 + 50, {=> game.removeTickEvent("secuenciaPosicion_doomguy")})
-		game.onTick(50, "secuenciaPosicion_doomguy", { self.cambiarSecuenciaPosicionSiCorresponde(direccion, fases)})
+		const animacionMovimiento = new AnimacionMovimiento()
+		animacionMovimiento.animacion(fases, 50, self)
 	}
 
-	method cambiarSecuenciaPosicionSiCorresponde(direccion, fases) {
+	override method accionDuranteMovimiento(fases) {
 		if (fases.size() > 0) {
-			self.estado("vivo_" + direccion.devolverDireccion() + "_" + fases.first())
+			self.estado("vivo_" + ultimaDireccion.devolverDireccion() + "_" + fases.first())
 			fases.remove(fases.first())
 		}
 	}
-	
+
 	method usarBomba() {
 		self.verificarSiHayBombas()
 		self.activarBomba(bombas.first())
