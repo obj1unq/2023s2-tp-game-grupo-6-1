@@ -40,11 +40,10 @@ class Personaje {
 
 	method accionPostMuerte()
 
-	method accionDuranteMuerte(fases)
-
-	method accionPostAtaque()
-
-	method accionDuranteAtaque(fases)
+	method accionDuranteMuerte(fases){
+		self.estado("muerto_" + fases.first())
+			fases.remove(fases.first())
+	}
 
 	method accionPostMovimiento()
 
@@ -142,11 +141,6 @@ object doomGuy inherits Personaje(arma = new Pistola(), estado = 'vivo_abajo_dis
 	override method activarAnimacionMuerte() {
 		const animacionMuerte = new AnimacionMuerte()
 		animacionMuerte.animacion((1 .. 7), 100, self)
-	}
-
-	override method accionDuranteMuerte(fases){
-		self.estado("muerto_" + fases.first())
-			fases.remove(fases.first())
 	}
 	
 

@@ -52,20 +52,3 @@ class AnimacionMuerte inherits Animacion {
 	}
 
 }
-
-class AnimacionAtaque inherits Animacion {
-
-	
-	override method nombreEventoDeAnimacion(){
-		return "secuenciaAtaque_"
-	}
-	
-	override method accionPostAnimacion(causante){
-		causante.accionPostAtaque()
-	}
-	
-	override method accionDuranteAnimacion(causante, fases){
-		causante.accionDuranteAtaque(fases)
-	}
-
-}
