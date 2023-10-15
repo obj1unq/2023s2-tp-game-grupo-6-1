@@ -108,6 +108,8 @@ class Enemigo inherits Personaje {
 	}
 
 	method elegirDireccionesDeAtaqueMasConveniente(direccionEnX, direccionEnY, destino)
+	
+	method condicionDeAtaqueMasConveniente(posicionActual, posicionFinal)
 
 }
 
@@ -119,16 +121,16 @@ class LostSoul inherits Enemigo {
 	}
 
 	override method elegirDireccionesDeAtaqueMasConveniente(direccionEnX, direccionEnY, destino) {
-		if (self.seEncuentraAMenosDeUnaCeldaDeDistancia(self.position().x(), destino.x())) {
+		if (self.condicionDeAtaqueMasConveniente(self.position().x(), destino.x())) {
 			return [ direccionEnY ]
-		} else if (self.seEncuentraAMenosDeUnaCeldaDeDistancia(self.position().y(), destino.y())) {
+		} else if (self.condicionDeAtaqueMasConveniente(self.position().y(), destino.y())) {
 			return [ direccionEnX ]
 		} else {
 			return [ direccionEnX, direccionEnY ]
 		}
 	}
 
-	method seEncuentraAMenosDeUnaCeldaDeDistancia(posicionActual, posicionFinal) {
+	override method condicionDeAtaqueMasConveniente(posicionActual, posicionFinal) {
 		return (posicionActual - posicionFinal).abs() <= 1
 	}
 
@@ -146,14 +148,14 @@ class Pinky inherits Enemigo {
 	}
 
 	override method elegirDireccionesDeAtaqueMasConveniente(direccionEnX, direccionEnY, destino) {
-		if (self.seEncuentraEnRangoDeVision(self.position().x(), destino.x())) {
+		if (self.condicionDeAtaqueMasConveniente(self.position().x(), destino.x())) {
 			return [ direccionEnY ]
 		} else {
 			return [ direccionEnX ]
 		}
 	}
 
-	method seEncuentraEnRangoDeVision(posicionActual, posicionFinal) {
+	override method condicionDeAtaqueMasConveniente(posicionActual, posicionFinal) {
 		return (posicionActual - posicionFinal).abs() <= vision
 	}
 
@@ -181,14 +183,14 @@ class Zombie inherits Enemigo {
 	}
 
 	override method elegirDireccionesDeAtaqueMasConveniente(direccionEnX, direccionEnY, destino) {
-		if (self.seEncuentraEnRangoDeVision(self.position().x(), destino.x())) {
+		if (self.condicionDeAtaqueMasConveniente(self.position().x(), destino.x())) {
 			return [ direccionEnY ]
 		} else {
 			return [ direccionEnX ]
 		}
 	}
 
-	method seEncuentraEnRangoDeVision(posicionActual, posicionFinal) {
+	override method condicionDeAtaqueMasConveniente(posicionActual, posicionFinal) {
 		return (posicionActual - posicionFinal).abs() <= vision
 	}
 
