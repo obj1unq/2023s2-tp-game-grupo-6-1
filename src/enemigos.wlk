@@ -39,7 +39,7 @@ class Enemigo inherits Personaje {
 
 	method atacarSiHayCercania(destino) {
 		if (self.hayCercania(destino)) {
-			self.actualizarEstadoSegun(destino, "vivo_ataque_")
+			self.actualizarEstadoSegun(destino, "vivo_ataque")
 			self.activarSecuenciaAtaque(self.direccionesDeAtaque(destino))
 		}
 	}
@@ -114,6 +114,10 @@ class Enemigo inherits Personaje {
 }
 
 class LostSoul inherits Enemigo {
+	
+	override method image(){
+		return "lostsoul/lostsoul_" + self.estado() + ".png"
+	}
 
 	override method activarAnimacionMuerte() {
 		const animacionMuerte = new AnimacionMuerte()
@@ -141,6 +145,10 @@ class LostSoul inherits Enemigo {
 }
 
 class Pinky inherits Enemigo {
+	
+	override method image(){
+		return "pinky/pinky_" + self.estado() + ".png"
+	}
 
 	override method activarAnimacionMuerte() {
 		const animacionMuerte = new AnimacionMuerte()
@@ -170,6 +178,10 @@ class Pinky inherits Enemigo {
 }
 
 class Zombie inherits Enemigo {
+	
+	override method image(){
+		return "zombie/zombie_" + self.estado() + ".png"
+	}
 	
 	override method atacarSiHayCercania(destino) {
 		if (self.hayCercania(destino)) {
