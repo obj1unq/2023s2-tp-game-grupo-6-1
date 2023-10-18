@@ -1,6 +1,8 @@
 import personaje.*
 import wollok.game.*
 import gameClasses.*
+import direcciones.*
+import managers.*
 
 //arma = puño, estado="vivo_derecha", position=game.at(0,0)
 //ataque = 1, vision = 3
@@ -50,7 +52,7 @@ class Enemigo inherits Personaje {
 
 	override method sufrirImpacto(causante) {
 		self.sufreDanio(causante.danio())
-		causante.efectosPostImpacto()
+		causante.efectoPostImpacto()
 	}
 
 	method acercarse(destino) {
@@ -59,7 +61,7 @@ class Enemigo inherits Personaje {
 	}
 
 	override method accionPostMuerte() {
-		enemigoManager.removerEnemigo(self)
+		enemigoManager.quitar(self)
 	}
 
 	method activarSecuenciaAtaque(direccion) {
@@ -68,8 +70,19 @@ class Enemigo inherits Personaje {
 			self.perseguirAdoomGuy()
 		})
 		game.onTick(50, self.toString() + "_ataque_" + self.identity(), { self.mover(direccion)
-			self.atacar()
+			self.atacar(self, direccion)
 		})
+	}
+
+	override method atacar(causante, _direccion) {
+		game.onCollideDo(self, { objeto => objeto.sufrirImpacto(self)})
+	}
+
+	method efectoPostImpacto() {
+	}
+
+	method danio() {
+		return 10
 	}
 
 	method actualizarEstadoSegun(destino, _estado) {
@@ -108,15 +121,15 @@ class Enemigo inherits Personaje {
 	}
 
 	method elegirDireccionesDeAtaqueMasConveniente(direccionEnX, direccionEnY, destino)
-	
+
 	method condicionDeAtaqueMasConveniente(posicionActual, posicionFinal)
 
 }
 
 class LostSoul inherits Enemigo {
-	
-	override method image(){
-		return "lostsoul/lostsoul_" + self.estado() + ".png"
+
+	override method image() {
+		return "lostSoul/lostSoul_" + self.estado() + ".png"
 	}
 
 	override method activarAnimacionMuerte() {
@@ -145,8 +158,8 @@ class LostSoul inherits Enemigo {
 }
 
 class Pinky inherits Enemigo {
-	
-	override method image(){
+
+	override method image() {
 		return "pinky/pinky_" + self.estado() + ".png"
 	}
 
@@ -178,11 +191,11 @@ class Pinky inherits Enemigo {
 }
 
 class Zombie inherits Enemigo {
-	
-	override method image(){
+
+	override method image() {
 		return "zombie/zombie_" + self.estado() + ".png"
 	}
-	
+
 	override method atacarSiHayCercania(destino) {
 		if (self.hayCercania(destino)) {
 			self.activarSecuenciaAtaque(self.direccionesDeAtaque(destino))
@@ -212,10 +225,9 @@ class Zombie inherits Enemigo {
 
 	override method activarSecuenciaAtaque(direccion) {
 		game.removeTickEvent(self.toString() + "_acercarse_" + self.identity())
-		self.atacar()
+		self.atacar(self, direccion)
 		self.perseguirAdoomGuy()
 	}
 
 }
-
 

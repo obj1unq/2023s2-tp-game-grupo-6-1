@@ -3,7 +3,7 @@ import gameClasses.*
 
 class Municion {
 
-	var property position
+	var property position = game.at(0, 0)
 	var property estado
 	var agarrable = false
 	var ataque
@@ -30,7 +30,8 @@ class Municion {
 		self.viajar(direccion)
 	}
 
-	method sufrirImpacto(causante)
+	method sufrirImpacto(causante) {
+	}
 
 	method posicionar(_position, direccion) {
 		const siguiente = direccion.mover(_position)
@@ -56,7 +57,8 @@ class Municion {
 class Bala inherits Municion {
 
 	override method image() {
-		return "bala/bala_" + self.estado() + ".png"
+		//return "bala/bala_" + self.estado() + ".png"
+		return "bala.png"
 	}
 
 	override method efectoPostImpacto() {

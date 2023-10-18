@@ -1,19 +1,20 @@
 import armas.*
 import wollok.game.*
 import gameClasses.*
+import direcciones.*
 
 class Personaje {
 
 	var arma
 	var property estado
 	var salud
-	var property position
+	var property position = game.at(0, 0)
 	var agarrable = false
 
 	method image()
 
-	method atacar() {
-		arma.usar()
+	method atacar(atacante, direccionAAtacar) {
+		arma.usar(atacante, direccionAAtacar)
 	}
 
 	method sufreDanio(danio)
@@ -23,10 +24,6 @@ class Personaje {
 	method mover(direccion)
 
 	method sufrirImpacto(causante)
-
-	method efectoPostImpacto()
-
-	method validarMover(direccion)
 
 	method muereSiNoHaySalud(danio)
 
@@ -40,14 +37,10 @@ class Personaje {
 
 	method accionPostMuerte()
 
-	method accionDuranteMuerte(fases){
+	method accionDuranteMuerte(fases) {
 		self.estado("muerto_" + fases.first())
-			fases.remove(fases.first())
+		fases.remove(fases.first())
 	}
-
-	method accionPostMovimiento()
-
-	method accionDuranteMovimiento(fases)
 
 }
 
@@ -68,6 +61,10 @@ object doomGuy inherits Personaje(arma = new Pistola(), estado = 'vivo_abajo_dis
 		self.validarSiHayObjetos(objetosEncontrados)
 		self.validarSiEsObjetoAgarrable(objetosEncontrados.first())
 		objetosEncontrados.first().agarrado(self)
+	}
+
+	method usarArma() {
+		self.atacar(self, ultimaDireccion)
 	}
 
 	method devolverObjetosEnPosicion() {
@@ -143,6 +140,9 @@ object doomGuy inherits Personaje(arma = new Pistola(), estado = 'vivo_abajo_dis
 		animacionMuerte.animacion((1 .. 7), 100, self)
 	}
 	
+	override method accionPostMuerte(){
+		
+	}
 
 	override method mover(direccion) {
 		const siguiente = direccion.mover(self.position())
@@ -152,23 +152,21 @@ object doomGuy inherits Personaje(arma = new Pistola(), estado = 'vivo_abajo_dis
 		self.activarSecuenciaCambioPosicion(direccion, [ 1 ])
 	}
 
-	override method validarMover(posicion) {
+	method validarMover(posicion) {
 		if (!self.personajePuedeMoverseA(posicion)) {
 			self.error("I can't go there")
 		}
 	}
 
 	method personajePuedeMoverseA(posicion) {
-		return not enMovimiento && salud > 0 && tablero.pertenece(posicion)
+		return salud > 0 && tablero.pertenece(posicion)
 	}
 
 	method establecerValoresDeCambioDePosicion(direccion) {
-		enMovimiento = true
 		ultimaDireccion = direccion
 	}
 
 	method moverConAnimacion(posicionAMover, direccionAMover) {
-		game.schedule(210, { enMovimiento = false})
 		game.schedule(100, {=> self.position(posicionAMover)})
 		game.schedule(150, {=> self.activarSecuenciaCambioPosicion(direccionAMover, [ 2, "normal", "disparando" ])})
 	}
@@ -178,11 +176,14 @@ object doomGuy inherits Personaje(arma = new Pistola(), estado = 'vivo_abajo_dis
 		animacionMovimiento.animacion(fases, 50, self)
 	}
 
-	override method accionDuranteMovimiento(fases) {
+	method accionDuranteMovimiento(fases) {
 		if (fases.size() > 0) {
 			self.estado("vivo_" + ultimaDireccion.devolverDireccion() + "_" + fases.first())
 			fases.remove(fases.first())
 		}
+	}
+
+	method accionPostMovimiento() {
 	}
 
 	method usarBomba() {
