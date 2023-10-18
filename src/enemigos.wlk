@@ -1,6 +1,7 @@
 import personaje.*
 import wollok.game.*
-import gameClasses.*
+import gameClasses.* 
+import manager.*
 
 //arma = puño, estado="vivo_derecha", position=game.at(0,0)
 //ataque = 1, vision = 3
@@ -59,7 +60,7 @@ class Enemigo inherits Personaje {
 	}
 
 	override method accionPostMuerte() {
-		enemigoManager.removerEnemigo(self)
+		enemigoManager.quitar(self)
 	}
 
 	method activarSecuenciaAtaque(direccion) {

@@ -1,14 +1,6 @@
 import wollok.game.*
 
-object armaManager{
-	const armas = #{pistola, miniGun, bomba}
-	
-	method esArma(obj){
-		return armas.contains(obj)
-	}
-}
-
-object pistola {
+class Pistola {
 	const property position = game.at(7,7)
 	
 	method image(){
