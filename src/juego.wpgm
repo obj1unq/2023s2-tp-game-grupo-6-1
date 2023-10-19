@@ -22,7 +22,10 @@ program main {
 	keyboard.shift().onPressDo({ doomGuy.estadisticas() })
 	keyboard.g().onPressDo({ doomGuy.usarBomba() })
 	keyboard.f().onPressDo({ doomGuy.usarArma() })
+	game.onCollideDo(doomGuy, {objeto => objeto.sufrirImpacto(doomGuy)})
 		// Esta responsabilidad habria que pasarla a otro lado
-	game.onTick(1000, "ENEMIGOS", { enemigoManager.generar() })
+	game.onTick(1000, "ENEMIGOS", { enemigoManager.generar()
+		enemigoManager.moverEnemigos()
+	})
 	game.start()
 }

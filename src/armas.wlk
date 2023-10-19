@@ -111,7 +111,7 @@ class Pistola inherits ArmaDistancia{
 			self.tipoMunicion().generar(personaje.position(), direccionPJ)
 			municionCargador -= 1
 		}else{
-			game.schedule(150, {self.recargar()})
+			game.schedule(1000, {self.recargar()})
 			self.validarRecarga()
 		}
 	}

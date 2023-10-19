@@ -12,17 +12,19 @@ class Enemigo inherits Personaje {
 
 	override method sufreDanio(_danio) {
 		salud -= _danio
+		game.say(self, salud.toString())
 		self.muereSiNoHaySalud(_danio)
 	}
 
 	override method muereSiNoHaySalud(_danio) {
-		if (self.personajeHaDeMorir(_danio)) {
+		if (self.personajeHaDeMorir()) {
 			self.morir()
 		}
 	}
 
-	override method personajeHaDeMorir(_danio) {
-		return salud > 0 && salud - _danio < 0
+	method personajeHaDeMorir() {
+		//return salud > 0 && salud - _danio < 0
+		return salud < 0
 	}
 
 	override method morir() {
@@ -31,7 +33,8 @@ class Enemigo inherits Personaje {
 	}
 
 	method perseguirAdoomGuy() {
-		game.onTick(1000, self.toString() + "_acercarse_" + self.identity(), { self.acercarseParaAtacar(doomGuy.position())})
+		//game.onTick(1000, self.toString() + "_acercarse_" + self.identity(), { self.acercarseParaAtacar(doomGuy.position())})
+		game.schedule(1000, {self.acercarseParaAtacar(doomGuy.position())})
 	}
 
 	method acercarseParaAtacar(destino) {
@@ -41,7 +44,7 @@ class Enemigo inherits Personaje {
 
 	method atacarSiHayCercania(destino) {
 		if (self.hayCercania(destino)) {
-			self.actualizarEstadoSegun(destino, "vivo_ataque")
+			self.actualizarEstadoSegun(destino, "vivo_ataque_")
 			self.activarSecuenciaAtaque(self.direccionesDeAtaque(destino))
 		}
 	}
@@ -65,24 +68,20 @@ class Enemigo inherits Personaje {
 	}
 
 	method activarSecuenciaAtaque(direccion) {
-		game.removeTickEvent(self.toString() + "_acercarse_" + self.identity())
 		game.schedule(200, { game.removeTickEvent(self.toString() + "_ataque_" + self.identity())
-			self.perseguirAdoomGuy()
 		})
-		game.onTick(50, self.toString() + "_ataque_" + self.identity(), { self.mover(direccion)
-			self.atacar(self, direccion)
-		})
+		game.onTick(50, self.toString() + "_ataque_" + self.identity(), { self.mover(direccion)})
 	}
 
-	override method atacar(causante, _direccion) {
-		game.onCollideDo(self, { objeto => objeto.sufrirImpacto(self)})
-	}
+//	override method atacar(causante, _direccion) {
+//		game.onCollideDo(self, { objeto => objeto.sufrirImpacto(self)})
+//	}
 
 	method efectoPostImpacto() {
 	}
 
 	method danio() {
-		return 10
+		return 1
 	}
 
 	method actualizarEstadoSegun(destino, _estado) {
@@ -134,7 +133,7 @@ class LostSoul inherits Enemigo {
 
 	override method activarAnimacionMuerte() {
 		const animacionMuerte = new AnimacionMuerte()
-		animacionMuerte.animacion((1 .. 6), 100, self)
+		animacionMuerte.animacion([1 .. 6], 100, self)
 	}
 
 	override method elegirDireccionesDeAtaqueMasConveniente(direccionEnX, direccionEnY, destino) {

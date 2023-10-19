@@ -100,23 +100,23 @@ object doomGuy inherits Personaje(arma = new Pistola(), estado = 'vivo_abajo_dis
 
 	method sufrirDanioSiHayEscudo(_danio) {
 		if (self.haDeSufrirElEscudo(_danio)) {
-			escudo -= _danio
+			escudo = (escudo - _danio)
 		}
 	}
 
 	method haDeSufrirElEscudo(_danio) {
-		return escudo - _danio >= 0 && salud > 0
+		return (escudo - _danio) >= 0 and salud > 0
 	}
 
 	method sufrirDanioSiNoHayEscudoYHaySalud(_danio) {
 		if (self.haDeSufrirLaSalud(_danio)) {
 			escudo = 0
-			salud -= _danio
+			salud = (salud - _danio)
 		}
 	}
 
 	method haDeSufrirLaSalud(_danio) {
-		return escudo - _danio < 0 && salud - _danio >= 0
+		return (escudo - _danio) < 0 and (salud - _danio) >= 0
 	}
 
 	override method muereSiNoHaySalud(_danio) {
@@ -126,7 +126,7 @@ object doomGuy inherits Personaje(arma = new Pistola(), estado = 'vivo_abajo_dis
 	}
 
 	override method personajeHaDeMorir(_danio) {
-		return escudo == 0 && salud > 0 && salud - _danio < 0
+		return escudo == 0 && (salud - _danio) < 0
 	}
 
 	override method morir() {
@@ -137,11 +137,10 @@ object doomGuy inherits Personaje(arma = new Pistola(), estado = 'vivo_abajo_dis
 
 	override method activarAnimacionMuerte() {
 		const animacionMuerte = new AnimacionMuerte()
-		animacionMuerte.animacion((1 .. 7), 100, self)
+		animacionMuerte.animacion([ 1 .. 7 ], 100, self)
 	}
-	
-	override method accionPostMuerte(){
-		
+
+	override method accionPostMuerte() {
 	}
 
 	override method mover(direccion) {
@@ -181,6 +180,10 @@ object doomGuy inherits Personaje(arma = new Pistola(), estado = 'vivo_abajo_dis
 			self.estado("vivo_" + ultimaDireccion.devolverDireccion() + "_" + fases.first())
 			fases.remove(fases.first())
 		}
+	}
+
+	method accionDuranteMuerte(){
+		
 	}
 
 	method accionPostMovimiento() {
