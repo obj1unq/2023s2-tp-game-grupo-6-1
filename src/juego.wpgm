@@ -4,28 +4,10 @@ import armas.*
 import enemigos.*
 import managers.*
 import direcciones.*
+import mapas.*
+import ui.*
 
 program main {
-	// Tablero settings
-	game.cellSize(80)
-	game.width(15)
-	game.height(10)
-		// Despues pasar esta parte a una configuracion inicial de tablero
-	game.addVisual(doomGuy)
-	game.errorReporter(doomGuy)
-		// Esto creo que se podria pasar una clase o algo asi
-	keyboard.up().onPressDo({ doomGuy.mover(new Arriba()) })
-	keyboard.down().onPressDo({ doomGuy.mover(new Abajo()) })
-	keyboard.left().onPressDo({ doomGuy.mover(new Izquierda()) })
-	keyboard.right().onPressDo({ doomGuy.mover(new Derecha()) })
-	keyboard.e().onPressDo({ doomGuy.agarrar() })
-	keyboard.shift().onPressDo({ doomGuy.estadisticas() })
-	keyboard.g().onPressDo({ doomGuy.usarBomba() })
-	keyboard.f().onPressDo({ doomGuy.usarArma() })
-	game.onCollideDo(doomGuy, {objeto => objeto.sufrirImpacto(doomGuy)})
-		// Esta responsabilidad habria que pasarla a otro lado
-	game.onTick(1000, "ENEMIGOS", { enemigoManager.generar()
-		enemigoManager.moverEnemigos()
-	})
-	game.start()
+
+	
 }

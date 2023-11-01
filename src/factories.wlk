@@ -1,18 +1,79 @@
 import enemigos.*
 import wollok.game.*
+import pickups.*
+import armas.*
 
-class Punio{
+class Factory{
+	method nuevo(){
+		const objeto = self.generarObjeto()
+		objeto.position(randomizer.emptyPosition())
+		return objeto
+	}
 	
+	method generarObjeto()
 }
 
-object lostSoulFactory { 
- 
-    method nuevo(){ 
-          const lostSoul = new LostSoul(vision = 3, arma = new Punio(), estado = 'vivo_derecha', salud = 50) 
-          lostSoul.position(randomizer.emptyPosition())
-          return lostSoul
-    } 
+
+object saludPequeniaFactory inherits Factory{
+	override method generarObjeto(){
+		return new SaludPequenia()
+	}
 }
+
+object saludMedianaFactory inherits Factory{
+	override method generarObjeto(){
+		return new SaludMediana()
+	}
+}
+
+object saludGrandeFactory inherits Factory{
+	override method generarObjeto(){
+		return new SaludGrande()
+	}
+}
+
+object escudoPequenioFactory inherits Factory{
+	override method generarObjeto(){
+		return new EscudoPequenio()
+	}
+}
+
+object escudoMedianoFactory inherits Factory{
+	override method generarObjeto(){
+		return new EscudoMediano()
+	}
+}
+
+object escudoGrandeFactory inherits Factory{
+	override method generarObjeto(){
+		return new EscudoGrande()
+	}
+}
+
+object pistolaFactory inherits Factory{
+	override method generarObjeto(){
+		return new Pistola()
+	}
+}
+
+object BFGFactory inherits Factory{
+	override method generarObjeto(){
+		return new BFG()
+	}
+}
+
+object lanzamisilesFactory inherits Factory{
+	override method generarObjeto(){
+		return new Lanzamisiles()
+	}
+}
+
+object minigunFactory inherits Factory{
+	override method generarObjeto(){
+		return new Minigun()
+	}
+}
+
 
 object randomizer {
 		

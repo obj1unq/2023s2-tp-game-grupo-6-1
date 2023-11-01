@@ -1,6 +1,6 @@
 import wollok.game.*
 import municiones.*
-
+import personaje.*
 //Templeate clases
 class Arma{
 	const agarrable = true
@@ -90,7 +90,7 @@ class Pistola inherits ArmaDistancia{
 	var municionCargador = 7
 	
 	override method tipoMunicion(){
-		return new Bala(estado = 'derecha', ataque = 10, rango = 5)
+		return new Bala(ataque = 10, causante = doomGuy)
 	}
 	
 	override method municionDisponible(){
