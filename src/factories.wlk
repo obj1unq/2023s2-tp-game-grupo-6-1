@@ -64,7 +64,7 @@ object BFGFactory inherits Factory{
 
 object lanzamisilesFactory inherits Factory{
 	override method generarObjeto(){
-		return new Lanzamisiles()
+		return new LanzaMisiles()
 	}
 }
 
