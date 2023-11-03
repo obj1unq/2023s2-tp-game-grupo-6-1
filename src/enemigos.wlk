@@ -18,6 +18,8 @@ class Enemigo inherits Personaje {
 	}
 
 	method velocidad()
+	
+	method velDisparo()
 
 	override method mover(direccion) {
 		super(direccion)
@@ -54,6 +56,10 @@ class LostSoul inherits Enemigo {
 	override method velocidad(){
 		return 1000
 	}
+	
+	override method velDisparo(){
+		return 0
+	}
 
 }
 
@@ -65,6 +71,10 @@ class Cacodemon inherits Enemigo {
 	
 	override method velocidad(){
 		return 5000
+	}
+	
+	override method velDisparo(){
+		return 2500
 	}
 
 }
@@ -78,7 +88,10 @@ class BaronOfHell inherits Enemigo {
 	override method velocidad(){
 		return 8000
 	}
-
+	
+	override method velDisparo(){
+		return 5000
+	}
 }
 
 
@@ -90,6 +103,10 @@ class Zombie inherits Enemigo {
 
 	override method velocidad(){
 		return 60 * 1000
+	}
+	
+	override method velDisparo(){
+		return 7000
 	}
 
 }

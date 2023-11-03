@@ -1,127 +1,202 @@
 import wollok.game.*
 import municiones.*
-import personaje.*
+import gameClasses.*
+
 //Templeate clases
-class Arma{
-	const agarrable = true
+class ArmaPersonaje inherits Visual{
+	const tiempoRecarga
+	const municionMaxCargador
+	var municionDisponible
+	var municionCargador
+
 	method danio()
+	method tipoMunicion(_causante)
 	
-	method image()
-	method usar(personaje, direccionPJ)
+	method agarrable(){
+		return true
+	}
 	
 	method agarrado(personaje){
 		personaje.equipar(self)
 	}
-}
-
-class Bomba inherits Arma{
 	
-}
-
-class ArmaDistancia inherits Arma{
-	method tipoMunicion()
-	method municionDisponible()
-	method municionEnCargador()
-	method recargar()
-	
-	
-	method recargando(){
-		return self.municionEnCargador() == 0
-	}
-	
-	method validarSuficienteMunicion(){
-		if (self.municionDisponible() == 0){
-			self.error("No hay mas municion")
-		}
-	}
-	method validarRecarga(){
-		if (self.recargando()){
-			self.error("Recargando")
-		}
-	}
-}
-
-class ArmaMelee inherits Arma{
-	method durabilidad()
-	method efectoPostImpacto()
-}
-
-//Clases armas melee
-class Motosierra inherits ArmaMelee{
-	var durabilidad = 3
-	
-	override method danio(){
-		//return valordanio
-	}
-	
-	override method durabilidad(){
-		return durabilidad
-	}
-	
-	override method image(){
-		//return imagen
-	}
-	
-	override method usar(personaje, direccionPJ){
-		self.validarDurabilidad()
-		//self.daniar()
-	}
-	
-	override method efectoPostImpacto(){
-		durabilidad -= 1
-	}
-	
-	method validarDurabilidad(){
-		if (durabilidad == 0){
-			self.error("Tu motosierra demoniaca no tiene mas usos!")
-		}
-	}
-	
-//	method daniar(){
-//		animacionManager.animacion(self)
-//		personaje.sufrirImpacto(self)
-//		self.efectoPostImpacto()
-//	}
-}
-
-//Clases armas distancia
-class Pistola inherits ArmaDistancia{
-	var municionDisponible = 70
-	var municionCargador = 7
-	
-	override method tipoMunicion(){
-		return new Bala(ataque = 10, causante = doomGuy)
-	}
-	
-	override method municionDisponible(){
-		return municionDisponible
-	}
-	
-	override method municionEnCargador(){
+	method municionCargador(){
 		return municionCargador
 	}
 	
-	override method danio(){
-		self.tipoMunicion().danio()
+	method municionDisponible(){
+		return municionDisponible
 	}
 	
-	override method usar(personaje, direccionPJ){
-		self.validarSuficienteMunicion()
-		if (!self.recargando()) {
-			self.tipoMunicion().generar(personaje.position(), direccionPJ)
-			municionCargador -= 1
-		}else{
-			game.schedule(1000, {self.recargar()})
-			self.validarRecarga()
+	method recargar(){
+		municionCargador = municionMaxCargador.min(municionDisponible)
+		municionDisponible = 0.max(municionDisponible - municionMaxCargador)
+	}
+	
+	method necesitaRecarga(){
+		return municionCargador == 0
+	}
+	
+	method validarSuficienteMunicion(){
+		if (municionDisponible == 0){
+			self.error("No hay mas municion")
 		}
 	}
 	
-	override method recargar(){
-		municionDisponible = 0.max(municionDisponible - 7)
-		municionCargador = 7.min(municionDisponible)
+	method validarRecarga(){
+		if (self.necesitaRecarga()){
+			self.error("Recargando")
+		}
+	}
+	
+	method usar(personaje, direccionPJ){
+		self.validarSuficienteMunicion()
+		if (!self.necesitaRecarga()) {
+			const municion = self.tipoMunicion(personaje)
+			municion.viajarImpactando(direccionPJ)
+			municionCargador -= 1
+		}else{
+			game.schedule(tiempoRecarga, {self.recargar()})
+			self.validarRecarga()
+		}
+	}
+}
+
+class ArmaEnemigo inherits Visual{
+	method danio()
+	method tipoMunicion(_causante)
+	
+	method agarrable(){
+		return false
+	}
+	
+	method usar(personaje, direccionPJ){
+		const municion = self.tipoMunicion(personaje)
+		municion.viajarImpactando(direccionPJ)
+	}
+}
+
+//Armas personajePrincipal
+class Pistola inherits ArmaPersonaje(tiempoRecarga = 1500, municionDisponible = 70, municionCargador = 7, municionMaxCargador = 7){
+	override method tipoMunicion(_causante){
+		return new Bala(causante = _causante, ataque = self.danio())
+	}
+	
+	override method danio(){
+		return 20
 	}
 	
 	override method image(){
 		return "assets/pistola.png"
+	}
+}
+
+class LanzaMisiles inherits ArmaPersonaje(tiempoRecarga = 5000, municionDisponible = 3, municionCargador = 1, municionMaxCargador = 1){
+	override method tipoMunicion(_causante){
+		return new Misil(causante = _causante, ataque = self.danio())
+	}
+	
+	override method danio(){
+		return 10000
+	}
+	
+	override method image(){
+		return "assets/lanzamisiles.png"
+	}
+}
+
+//LA BALANCEA MAXI
+class BFG inherits ArmaPersonaje(tiempoRecarga = 5000, municionDisponible = 3, municionCargador = 1, municionMaxCargador = 1){
+	override method tipoMunicion(_causante){
+		return new Argent(causante = _causante, ataque = self.danio())
+	}
+	
+	override method danio(){
+		return 10000
+	}
+	
+	override method image(){
+		//return "assets/lanzamisiles.png" IMAGEN
+	}
+}
+
+class Minigun inherits Pistola(tiempoRecarga = 3500, municionDisponible = 150, municionCargador = 75, municionMaxCargador = 75){
+	
+	override method usar(personaje, direccionPJ){
+		self.validarSuficienteMunicion()
+		if (self.hayMunicionSuficienteCargador(3)) {
+			self.dispararBalas(3, personaje, direccionPJ)
+		}else{
+			//SI QUEDAN BALAS EN EL CARGADOR, SE PIERDEN POR FUNCIONAMIENTO DE UNA MINIGUN
+			game.schedule(tiempoRecarga, {self.recargar()})
+			self.validarRecarga()
+		}
+	}
+	
+	method hayMunicionSuficienteCargador(cantidad){
+		return municionCargador >= cantidad
+	}
+	
+	//es valido usar recursion? 
+	method dispararBalas(cantidad, _personaje, _direccionPJ){
+		if (cantidad > 0){
+			const municion = self.tipoMunicion(_personaje)
+			municion.viajarImpactando(_direccionPJ)
+			municionCargador -= 1
+			self.dispararBalas(cantidad - 1, _personaje, _direccionPJ)
+		}
+	}
+	
+	override method validarRecarga(){
+		if(!self.hayMunicionSuficienteCargador(3)){
+			self.error("Recargando")
+		}
+	}
+	
+	override method image(){
+		return "assets/miniGun.png"
+	}
+}
+
+//Armas enemigos
+class Francotirador inherits ArmaEnemigo{
+	override method tipoMunicion(_causante){
+		return new BalaFrancotirador(causante = _causante, ataque = self.danio())
+	}
+	
+	override method danio(){
+		return 100
+	}
+	
+	override method image(){
+		//return "assets/pistola.png" IMAGEN FRANCOTIRADOR
+	}
+}
+
+class LanzaBolasFuego inherits ArmaEnemigo{
+	override method tipoMunicion(_causante){
+		return new BolaDeFuego(causante = _causante, ataque = self.danio())
+	}
+	
+	override method danio(){
+		return 50
+	}
+	
+	override method image(){
+		//return "assets/pistola.png" IMAGEN 
+	}
+}
+
+class LanzaBolasPlasma inherits ArmaEnemigo{
+	override method tipoMunicion(_causante){
+		return new BolaDePlasma(causante = _causante, ataque = self.danio())
+	}
+	
+	override method danio(){
+		return 75
+	}
+	
+	override method image(){
+		//return "assets/pistola.png" IMAGEN 
 	}
 }

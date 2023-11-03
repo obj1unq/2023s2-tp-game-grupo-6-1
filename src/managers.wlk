@@ -77,9 +77,13 @@ object enemigoManager inherits Manager(limite = 0, factories = #{ }) {
 	}
 
 	method activarAtaqueEnemigos() {
-		generados.forEach({ enemigo => enemigo.dispararSiEstaVivo(new Izquierda())})
+		generados.forEach({ enemigo => self.activarAtaqueEnemigo(enemigo)})
 	}
-
+	
+	method activarAtaqueEnemigo(_enemigo){
+		game.schedule(_enemigo.velDisparo(), { _enemigo.dispararSiEstaVivo(new Izquierda())})
+	}
+	
 	method estanTodosMuertos() {
 		return generados.isEmpty()
 	}
