@@ -63,7 +63,7 @@ object setupController {
 
 object nivelController {
 
-	var niveles = [ mapa1, mapa2, mapa3, mapa4, mapa5, mapaBoss ]
+	var niveles = [ mapa1, mapa2, mapa3, mapa4, mapa5] //mapaBoss ]
 	var nivelActual = 0
 
 	method ejecutarJuego() {

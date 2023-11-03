@@ -12,6 +12,10 @@ class Personaje inherits Visual {
 	method arma(){
 		return arma
 	}
+	
+	method salud(){
+		return salud
+	}
 
 	method dispararSiEstaVivo(direccionAAtacar) {
 		if (salud > 0) {

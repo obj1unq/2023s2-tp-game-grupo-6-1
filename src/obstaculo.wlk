@@ -11,7 +11,7 @@ class Muro inherits Visual {
 	}
 	
 	override method image(){
-		//return IMAGEN
+		return "assets/barril/barril_default.png"
 	}
 	
 	override method sufrirImpacto(municion){
@@ -30,46 +30,47 @@ class Muro inherits Visual {
 }
 
 class Barril inherits Visual{
+	var property estado = "default"
 	
 	method danio(){
 		return 500
 	}
 	
 	override method image(){
-		//return IMAGEN
+		return "assets/barril/barril_" + self.estado() + ".png"
 	}
 	
 	override method sufrirImpacto(municion){
 		if (municion.causante().equals(doomGuy)) {
 			super(municion)
-			self.explotar()
+			self.estado("muerto")
+			self.explotar() //PUESTO PARA PROBAR TEST
+			//game.schedule(500, {self.explotar()}) //ACTIVAR CUANDO ANDE EL JUEGO 
+			//hace que se vea la imagen del barril por explotar medio segundo y luego hace la explosion
 		}
 	}
 	
 	method explotar(){
-		self.danioExplosion()
 		game.removeVisual(self)
-		//hacer imagen explosion
+		self.danioExplosion()
 	}
 	
 	method danioExplosion(){
-		self.objetosEnRadioExplosion().forEach({objeto => objeto.sufrirImpacto(self)})
+		self.objetosEnRadioExplosion().forEach({objeto => objeto.sufreDanio(self.danio())})
 	}
 	
 	method objetosEnRadioExplosion(){
 		const direcciones = [new Arriba(), new Abajo(), new Izquierda(), new Derecha()]
-		return self.ObjetosEn(direcciones, direcciones.size())
+		return self.ColectorObjetosEn(direcciones, (direcciones.size() - 1), [])
 	}
 	
 	//es valido recursion?
-	//PROBAR EN JUEGO SI FUNCIONA
-	method ObjetosEn(direcciones, indice){
-		const objetosHastaAhora = []
+	method ColectorObjetosEn(direcciones, indice, lista){
 		if(indice >= 0){
-			objetosHastaAhora.addAll(game.getObjectsIn(direcciones.get(indice).mover(self.position())))
-			self.ObjetosEn(direcciones, (indice - 1))
+			lista.addAll(game.getObjectsIn(direcciones.get(indice).mover(self.position())))
+			self.ColectorObjetosEn(direcciones, (indice - 1), lista)
 		}
-		objetosHastaAhora.addAll(game.getObjectsIn(self.position()))
-		return objetosHastaAhora
+		lista.addAll(game.getObjectsIn(self.position()))
+		return lista
 	}
 }

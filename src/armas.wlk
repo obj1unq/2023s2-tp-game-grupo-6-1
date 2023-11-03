@@ -87,7 +87,7 @@ class Pistola inherits ArmaPersonaje(tiempoRecarga = 1500, municionDisponible = 
 	}
 	
 	override method image(){
-		return "assets/pistola.png"
+		return "assets/armas/pistola_default.png"
 	}
 }
 
@@ -101,7 +101,7 @@ class LanzaMisiles inherits ArmaPersonaje(tiempoRecarga = 5000, municionDisponib
 	}
 	
 	override method image(){
-		return "assets/lanzamisiles.png"
+		return "assets/armas/lanzamisiles_default.png"
 	}
 }
 
@@ -116,7 +116,7 @@ class BFG inherits ArmaPersonaje(tiempoRecarga = 5000, municionDisponible = 3, m
 	}
 	
 	override method image(){
-		//return "assets/lanzamisiles.png" IMAGEN
+		return "assets/armas/bfg_default.png"
 	}
 }
 
@@ -154,7 +154,7 @@ class Minigun inherits Pistola(tiempoRecarga = 3500, municionDisponible = 150, m
 	}
 	
 	override method image(){
-		return "assets/miniGun.png"
+		return "assets/armas/minigun_default.png"
 	}
 }
 
@@ -183,7 +183,7 @@ class LanzaBolasFuego inherits ArmaEnemigo{
 	}
 	
 	override method image(){
-		//return "assets/pistola.png" IMAGEN 
+		//NO TIENE IMAGEN PARA QUE NO ES UN ARMA COMO TAL SINO LA HABILIDAD DEL ENEMIGO PARA DANIAR
 	}
 }
 
@@ -197,6 +197,6 @@ class LanzaBolasPlasma inherits ArmaEnemigo{
 	}
 	
 	override method image(){
-		//return "assets/pistola.png" IMAGEN 
+		//NO TIENE IMAGEN PARA QUE NO ES UN ARMA COMO TAL SINO LA HABILIDAD DEL ENEMIGO PARA DANIAR
 	}
 }

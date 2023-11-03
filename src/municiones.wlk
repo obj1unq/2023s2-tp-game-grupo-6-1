@@ -6,6 +6,7 @@ class Municion inherits Visual {
 
 	var ataque
 	var causante
+	var property estado = "derecha" //la inicio con valor para no tener conflictos pero siempre se actualiza cuando disparan
 
 	method danio() {
 		return ataque
@@ -36,6 +37,7 @@ class Municion inherits Visual {
 	}
 
 	method viajarImpactando(direccion) {
+		self.estado(direccion.devolverDireccion())
 		self.mover(direccion)
 		game.onTick(self.velocidadMovimiento(), "disparo_" + self.identity(), {=> self.moverSiPerteneceAlTablero(direccion)
 		self.impactar()})	
@@ -55,7 +57,7 @@ class Municion inherits Visual {
 class Bala inherits Municion {
 
 	override method image() {
-		return "municion/bala_default.png"
+		return "assets/municiones/bala_" + self.estado() + "_default.png"
 	}
 
 	override method velocidadMovimiento(){
@@ -75,7 +77,7 @@ class BalaFrancotirador  inherits Bala {
 class BolaDeFuego inherits Bala {
 
 	override method image() {
-		return "municion/bola_fuego_default.png"
+		return "assets/municion/bala_fuego_default.png"
 	}
 	
 	//a futuro puede que genere un efecto de quemado
@@ -84,7 +86,7 @@ class BolaDeFuego inherits Bala {
 class BolaDePlasma inherits Bala {
 
 	override method image() {
-		return "municion/bola_plasma_default.png"
+		return "assets/municiones/bola_plasma_default.png"
 	}
 	
 	//a futuro puede que genere un efecto de reduccion bala o algo asi
@@ -93,7 +95,7 @@ class BolaDePlasma inherits Bala {
 class Misil inherits Municion {
 
 	override method image() {
-		return "municion/misil_default.png"
+		return "assets/municiones/misil_" + self.estado() +  "_default.png"
 	}
 	
 	override method velocidadMovimiento(){
@@ -107,7 +109,7 @@ class Misil inherits Municion {
 class Argent inherits Municion { //Municion de la BFG
 
 	override method image() {
-		return "municion/argent_default.png"
+		return "assets/municiones/argent_default.png"
 	}
 
 	override method velocidadMovimiento(){
