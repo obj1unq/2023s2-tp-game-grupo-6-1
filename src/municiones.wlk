@@ -101,7 +101,6 @@ class Misil inherits Municion {
 	override method velocidadMovimiento(){
 		return 100
 	}
-	
 	//a futuro puede que genere un efecto de dañar celdas lindantes
 
 }
