@@ -50,6 +50,7 @@ object setupController {
 		keyboard.down().onPressDo({ doomGuy.mover(new Abajo())})
 		keyboard.left().onPressDo({ doomGuy.mover(new Izquierda())})
 		keyboard.right().onPressDo({ doomGuy.mover(new Derecha())})
+		keyboard.s().onPressDo({doomGuy.dispararSiEstaVivo(new Derecha())})
 		game.onTick(1000, "ENEMIGOS", { enemigoManager.moverEnemigos()
 			enemigoManager.activarAtaqueEnemigos()
 		})

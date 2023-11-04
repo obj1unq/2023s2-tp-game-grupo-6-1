@@ -6,8 +6,9 @@ import managers.*
 import direcciones.*
 import mapas.*
 import ui.*
+import gameClasses.*
 
 program main {
-
-	
+	mapa1.generar()
+	setupController.initialize()
 }

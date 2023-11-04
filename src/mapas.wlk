@@ -6,6 +6,7 @@ import managers.*
 import ui.*
 import gameClasses.*
 import factories.*
+import obstaculo.*
 
 class Mapa { 
 	
@@ -88,7 +89,7 @@ object z inherits EnemigoEnCelda{//representa al zombie
 
 object m inherits ObjetoEnCelda{//representa al muro
 	override method nuevoObjeto(){
-		return new Muro()
+		return new Muro(durabilidad = 10)
 	}	
 }
 
