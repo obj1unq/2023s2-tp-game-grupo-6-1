@@ -2,6 +2,7 @@ import armas.*
 import wollok.game.*
 import gameClasses.*
 import direcciones.*
+import managers.*
 
 class Personaje inherits Visual {
 
@@ -77,6 +78,7 @@ object doomGuy inherits Personaje(arma = new Minigun(), estado = 'default', salu
 
 	override method equipar(_arma) {
 		arma = _arma
+		armaManager.quitar(_arma)
 	}
 
 	override method sufreDanio(_danio) {

@@ -62,6 +62,11 @@ class ArmaPersonaje inherits Visual{
 			self.validarRecarga()
 		}
 	}
+	
+	override method sufrirImpacto(municion){
+		municion.causante().equipar(self)
+		super(municion)
+	}
 }
 
 class ArmaEnemigo inherits Visual{
