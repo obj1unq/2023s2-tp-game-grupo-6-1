@@ -10,6 +10,7 @@ class Enemigo inherits Personaje {
 	override method sufreDanio(_danio) {
 		salud -= _danio
 		self.muereSiNoHaySalud(_danio)
+		game.say(self, salud.toString())
 	}
 
 	override method morir() {
@@ -54,7 +55,7 @@ class LostSoul inherits Enemigo {
 	}
 
 	override method velocidad(){
-		return 1000
+		return 5000
 	}
 	
 	override method velDisparo(){

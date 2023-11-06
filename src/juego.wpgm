@@ -9,6 +9,5 @@ import ui.*
 import gameClasses.*
 
 program main {
-	mapa1.generar()
-	setupController.initialize()
+	nivelController.ejecutarJuego()
 }

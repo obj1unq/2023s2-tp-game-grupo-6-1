@@ -42,21 +42,22 @@ object UIController {
 }
 
 object setupController {
-
-	method initialize() {
-		game.cellSize(80)
+	
+	method setupInitialize(){
 		game.errorReporter(doomGuy)
 		keyboard.up().onPressDo({ doomGuy.mover(new Arriba())})
 		keyboard.down().onPressDo({ doomGuy.mover(new Abajo())})
-		keyboard.left().onPressDo({ doomGuy.mover(new Izquierda())})
-		keyboard.right().onPressDo({ doomGuy.mover(new Derecha())})
-		keyboard.s().onPressDo({doomGuy.dispararSiEstaVivo(new Derecha())})
+		keyboard.s().onPressDo({ doomGuy.dispararSiEstaVivo(new Derecha())})
 		game.onTick(1000, "ENEMIGOS", { enemigoManager.moverEnemigos()
 			enemigoManager.activarAtaqueEnemigos()
 		})
 		game.onTick(5000, "SALUD", { saludManager.generar()})
 		game.onTick(7000, "ESCUDO", { escudoManager.generar()})
 		game.onTick(5000, "ARMA", { armaManager.generar()})
+	}
+
+	method initialize() {
+		self.setupInitialize()
 		game.start()
 	}
 
@@ -64,14 +65,18 @@ object setupController {
 
 object nivelController {
 
-	var niveles = [ mapa1, mapa2, mapa3, mapa4, mapa5] //mapaBoss ]
+	var niveles = [ mapa1, mapa2, mapa3, mapa4, mapa5 ] // mapaBoss ]
 	var nivelActual = 0
 
 	method ejecutarJuego() {
 		const mapaActual = niveles.get(nivelActual)
 		mapaActual.aplicarConfiguraciones()
 		mapaActual.generar()
-		setupController.initialize()
+		if(nivelActual == 0){
+			setupController.initialize()
+		}else{
+			setupController.setupInitialize()
+		}
 	}
 
 	method ejecutarGameOverSiEnZonaDoomguy(position) {
@@ -89,7 +94,9 @@ object nivelController {
 
 	method pasarDeNivelSiVencioATodos() {
 		if (enemigoManager.estanTodosMuertos()) {
-			self.subirNivel()
+			game.clear()
+			UIController.ponerUI(loading)
+			game.schedule(5000, { self.subirNivel()})
 		}
 	}
 

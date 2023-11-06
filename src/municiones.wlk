@@ -57,7 +57,7 @@ class Municion inherits Visual {
 class Bala inherits Municion {
 
 	override method image() {
-		return "assets/municiones/bala_" + self.estado() + "_default.png"
+		return "assets/municion/bala_" + self.estado() + "_default.png"
 	}
 
 	override method velocidadMovimiento(){

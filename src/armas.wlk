@@ -53,6 +53,8 @@ class ArmaPersonaje inherits Visual{
 		self.validarSuficienteMunicion()
 		if (!self.necesitaRecarga()) {
 			const municion = self.tipoMunicion(personaje)
+			game.addVisual(municion)
+			municion.position(personaje.position())
 			municion.viajarImpactando(direccionPJ)
 			municionCargador -= 1
 		}else{
@@ -77,13 +79,13 @@ class ArmaEnemigo inherits Visual{
 }
 
 //Armas personajePrincipal
-class Pistola inherits ArmaPersonaje(tiempoRecarga = 1500, municionDisponible = 70, municionCargador = 7, municionMaxCargador = 7){
+class Pistola inherits ArmaPersonaje(tiempoRecarga = 1000, municionDisponible = 70, municionCargador = 7, municionMaxCargador = 7){
 	override method tipoMunicion(_causante){
 		return new Bala(causante = _causante, ataque = self.danio())
 	}
 	
 	override method danio(){
-		return 20
+		return 50
 	}
 	
 	override method image(){
@@ -141,6 +143,8 @@ class Minigun inherits Pistola(tiempoRecarga = 3500, municionDisponible = 150, m
 	method dispararBalas(cantidad, _personaje, _direccionPJ){
 		if (cantidad > 0){
 			const municion = self.tipoMunicion(_personaje)
+			game.addVisual(municion)
+			municion.position(_personaje.position())
 			municion.viajarImpactando(_direccionPJ)
 			municionCargador -= 1
 			self.dispararBalas(cantidad - 1, _personaje, _direccionPJ)
