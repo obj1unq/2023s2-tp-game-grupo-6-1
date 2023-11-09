@@ -7,10 +7,11 @@ class Manager {
 
 	var generados = []
 	var limite
-	const factories
+	var factories
 
 	method seleccionarFactory() {
-		return factories.anyOne()
+		const randomNumber = (0 .. (factories.size() - 1)).anyOne()
+		return factories.get(randomNumber)
 	}
 
 	method generar() {
@@ -21,7 +22,13 @@ class Manager {
 
 	method quitar(item) {
 		generados.remove(item)
-		game.removeVisual(item)
+		self.removerSiPresenteEnTablero(item)
+	}
+
+	method removerSiPresenteEnTablero(item) {
+		if (game.hasVisual(item)) {
+			game.removeVisual(item)
+		}
 	}
 
 	method agregarObjeto() {
@@ -33,28 +40,42 @@ class Manager {
 	method agregarFactory(factory) {
 		factories.add(factory)
 	}
-	
-	method limite(_limite){
+
+	method limite(_limite) {
 		limite = _limite
 	}
-	
-	method generados(){
+
+	method generados() {
 		return generados
 	}
 
+	method vaciarGenerados() {
+		generados = []
+	}
+
+	method vaciarFactories() {
+		factories = []
+	}
+
+	method factories() {
+		return factories
+	}
+
 }
 
+object armaManager inherits Manager(limite = 5, factories = [ pistolaFactory ]) {
 
-object armaManager inherits Manager(limite = 5, factories = #{pistolaFactory }){
 }
 
-object saludManager inherits Manager(limite = 5, factories = #{saludPequeniaFactory }){
+object saludManager inherits Manager(limite = 5, factories = [ saludPequeniaFactory ]) {
+
 }
 
-object escudoManager inherits Manager(limite = 5, factories = #{escudoPequenioFactory }){
+object escudoManager inherits Manager(limite = 5, factories = [ escudoPequenioFactory ]) {
+
 }
 
-object enemigoManager inherits Manager(limite = 0, factories = #{ }) {
+object enemigoManager inherits Manager(limite = 0, factories = []) {
 
 	override method agregarObjeto() {
 	}
@@ -79,11 +100,11 @@ object enemigoManager inherits Manager(limite = 0, factories = #{ }) {
 	method activarAtaqueEnemigos() {
 		generados.forEach({ enemigo => self.activarAtaqueEnemigo(enemigo)})
 	}
-	
-	method activarAtaqueEnemigo(_enemigo){
+
+	method activarAtaqueEnemigo(_enemigo) {
 		game.schedule(_enemigo.velDisparo(), { _enemigo.dispararSiEstaVivo(new Izquierda())})
 	}
-	
+
 	method estanTodosMuertos() {
 		return generados.isEmpty()
 	}

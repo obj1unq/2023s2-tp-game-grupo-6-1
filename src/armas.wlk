@@ -112,7 +112,7 @@ class LanzaMisiles inherits ArmaPersonaje(tiempoRecarga = 5000, municionDisponib
 	}
 }
 
-//LA BALANCEA MAXI
+
 class BFG inherits ArmaPersonaje(tiempoRecarga = 5000, municionDisponible = 3, municionCargador = 1, municionMaxCargador = 1){
 	override method tipoMunicion(_causante){
 		return new Argent(causante = _causante, ataque = self.danio())

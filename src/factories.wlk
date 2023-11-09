@@ -85,7 +85,7 @@ object randomizer {
 	}
 	
 	method emptyPosition() {
-		const position = self.position()
+		var position = self.position()
 		if(game.getObjectsIn(position).isEmpty()) {
 			return position	
 		}

@@ -49,7 +49,7 @@ class Personaje inherits Visual {
 	}
 
 	method personajeHaDeMorir() {
-		return salud < 0
+		return salud <= 0
 	}
 
 	method obtenerEscudo(valor)
@@ -60,7 +60,7 @@ class Personaje inherits Visual {
 
 }
 
-object doomGuy inherits Personaje(arma = new Minigun(), estado = 'default', salud = 100, position = game.at(0, game.center().y())) {
+object doomGuy inherits Personaje(arma = new BFG(), estado = 'default', salud = 100, position = game.at(0, game.center().y())) {
 
 	var escudo = 100
 

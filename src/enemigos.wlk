@@ -3,7 +3,7 @@ import wollok.game.*
 import gameClasses.*
 import direcciones.*
 import managers.*
-
+import armas.*
 
 class Enemigo inherits Personaje {
 
@@ -108,6 +108,34 @@ class Zombie inherits Enemigo {
 	
 	override method velDisparo(){
 		return 7000
+	}
+
+}
+
+object cyberDemon inherits Enemigo(arma = new LanzaMisiles(), estado = "default", salud = 20000) {
+
+	override method image() {
+		return "cyberdemon/cyberdemon_" + self.estado() + ".png"
+	}
+
+	override method velocidad(){
+		return 30000
+	}
+	
+	override method velDisparo(){
+		return 3000
+	}
+	
+	method esquivar(){
+		self.position(self.posicionDeEsquive())
+	}
+	
+	method posicionDeEsquive(){
+		return game.at(self.position().x(), self.posicionRandomEnY())
+	}
+	
+	method posicionRandomEnY(){
+		return (0 .. (game.height() - 1)).anyOne()
 	}
 
 }

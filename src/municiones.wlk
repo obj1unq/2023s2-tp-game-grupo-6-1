@@ -31,8 +31,10 @@ class Municion inherits Visual {
 	}
 
 	method terminarMovimientoSiPresenteEnTablero() {
-		game.removeTickEvent("disparo_" + self.identity())
-		game.removeVisual(self)
+		if (game.hasVisual(self)) {
+			game.removeTickEvent("disparo_" + self.identity())
+			game.removeVisual(self)
+		}
 	}
 
 	method viajarImpactando(direccion) {
@@ -87,7 +89,7 @@ class BolaDeFuego inherits Bala {
 class BolaDePlasma inherits Bala {
 
 	override method image() {
-		return "assets/municiones/bola_plasma_default.png"
+		return "assets/municion/bola_plasma_default.png"
 	}
 
 // a futuro puede que genere un efecto de reduccion bala o algo asi
@@ -96,7 +98,7 @@ class BolaDePlasma inherits Bala {
 class Misil inherits Municion {
 
 	override method image() {
-		return "assets/municiones/misil_" + self.estado() + "_default.png"
+		return "assets/municion/misil_" + self.estado() + "_default.png"
 	}
 
 	override method velocidadMovimiento() {
@@ -109,7 +111,7 @@ class Misil inherits Municion {
 class Argent inherits Municion { //Municion de la BFG
 
 	override method image() {
-		return "assets/municiones/argent_default.png"
+		return "assets/municion/argent_default.png"
 	}
 
 	override method velocidadMovimiento() {
@@ -117,7 +119,10 @@ class Argent inherits Municion { //Municion de la BFG
 	}
 
 	override method impactar() {
-		enemigoManager.generados().forEach({ objeto => objeto.sufrirImpacto(self)})
+		if (!game.colliders(self).isEmpty()) {
+			enemigoManager.generados().forEach({ objeto => objeto.sufreDanio(self.danio())})
+			self.terminarMovimientoSiPresenteEnTablero()
+		}
 	}
 
 }
