@@ -132,7 +132,7 @@ object mapa1 inherits Mapa(backgroundCell = "ui/mapa1.png"){
 }
 
 
-object mapa2 inherits Mapa(backgroundCell = "ui/mapa1.png"){
+object mapa2 inherits Mapa(backgroundCell = "ui/mapa2.png"){
 	override method celdas(){
 		return [
 		[_,_,_,_,_,_,_,_,_,_,_,_,_,_,_,_,_],
@@ -161,7 +161,7 @@ object mapa2 inherits Mapa(backgroundCell = "ui/mapa1.png"){
 	}
 }
 
-object mapa3 inherits Mapa(backgroundCell = "ui/mapa1.png"){
+object mapa3 inherits Mapa(backgroundCell = "ui/mapa3.png"){
 	override method celdas(){
 		return [
 		[_,_,_,_,_,_,_,_,_,_,_,_,_,_,_,_,_],
@@ -184,7 +184,7 @@ object mapa3 inherits Mapa(backgroundCell = "ui/mapa1.png"){
 }
 
 
-object mapa4 inherits Mapa(backgroundCell = "ui/mapa1.png"){
+object mapa4 inherits Mapa(backgroundCell = "ui/mapa4.png"){
 	override method celdas(){
 		return [
 		[_,_,_,_,_,_,_,_,_,_,_,_,_,_,_,_,_],
@@ -214,7 +214,7 @@ object mapa4 inherits Mapa(backgroundCell = "ui/mapa1.png"){
 }
 
 
-object mapa5 inherits Mapa(backgroundCell = "ui/mapa1.png"){
+object mapa5 inherits Mapa(backgroundCell = "ui/mapa5.png"){
 	override method celdas(){
 		return [
 		[_,_,_,_,_,_,_,_,_,_,_,_,_,_,_,_,_],
@@ -236,7 +236,7 @@ object mapa5 inherits Mapa(backgroundCell = "ui/mapa1.png"){
 	}
 }
 
-object mapaBoss inherits Mapa(backgroundCell = "ui/mapa1.png"){
+object mapaBoss inherits Mapa(backgroundCell = "ui/mapaBoss.png"){
 	override method celdas(){
 		return [
 		[_,_,_,_,_,_,_,_,_,_,_,_,_,_,_,_,_],
