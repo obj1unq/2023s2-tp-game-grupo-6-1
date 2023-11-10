@@ -17,7 +17,7 @@ object gameOver inherits Visual {
 
 }
 
-object win inherits Visual(position = game.at(game.width() / 2, game.height() / 2)) {
+object win inherits Visual {
 
 	override method image() {
 		return "win.png"

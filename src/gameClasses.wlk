@@ -108,7 +108,7 @@ object nivelController {
 	}
 
 	method subirNivel() {
-		if (nivelActual <= 5) {
+		if (nivelActual < 5) {
 			nivelActual++
 			self.ejecutarJuego()
 		} else {
