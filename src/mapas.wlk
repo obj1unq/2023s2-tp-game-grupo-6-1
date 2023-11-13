@@ -30,7 +30,8 @@ class Mapa {
 	}
 	
 	method aplicarConfiguraciones(){
-		 game.ground(backgroundCell)
+		doomGuy.arma().recargaParcial()
+		game.ground(backgroundCell)
 	}
 	
 }
