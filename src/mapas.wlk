@@ -119,15 +119,15 @@ object mapa1 inherits Mapa(backgroundCell = "ui/mapa1.png"){
 		//1360x800
 		return [
 		[_,_,_,_,_,_,_,_,_,_,_,_,_,_,_,_,_],
-		[_,_,_,_,_,_,_,_,_,_,_,_,_,l,_,_,_],
 		[_,_,_,_,_,_,_,_,_,_,_,_,_,_,_,_,_],
-		[_,_,_,_,_,_,_,_,_,_,_,_,_,l,_,_,_],
+		[_,_,_,_,_,_,_,_,_,_,_,_,_,_,_,_,_],
+		[_,_,_,_,_,_,_,_,_,_,_,_,_,_,_,_,_],
 		[_,_,_,_,_,_,_,_,_,_,_,_,_,_,_,_,_],		
-		[_,_,_,_,_,_,_,_,_,_,_,_,_,l,_,_,_],		
+		[_,_,_,_,_,_,_,_,_,_,_,_,_,_,_,_,z],		
 		[_,_,_,_,_,_,_,_,_,_,_,_,_,_,_,_,_],
-		[_,_,_,_,_,_,_,_,_,_,_,_,_,l,_,_,_],
 		[_,_,_,_,_,_,_,_,_,_,_,_,_,_,_,_,_],
-		[_,_,_,_,_,_,_,_,_,_,_,_,_,l,_,_,_]			
+		[_,_,_,_,_,_,_,_,_,_,_,_,_,_,_,_,_],
+		[_,_,_,_,_,_,_,_,_,_,_,_,_,_,_,_,_]			
 	].reverse()
 	}
 }
@@ -151,7 +151,7 @@ object mapa2 inherits Mapa(backgroundCell = "ui/mapa2.png"){
 	
 	override method generar(){
 		super()
-		UIController.quitarUI(loading)
+		uIController.quitarUI(loading)
 	}
 	
 	override method aplicarConfiguraciones(){
@@ -180,7 +180,7 @@ object mapa3 inherits Mapa(backgroundCell = "ui/mapa3.png"){
 	
 	override method generar(){
 		super()
-		UIController.quitarUI(loading)
+		uIController.quitarUI(loading)
 	}
 }
 
@@ -203,7 +203,7 @@ object mapa4 inherits Mapa(backgroundCell = "ui/mapa4.png"){
 	
 	override method generar(){
 		super()
-		UIController.quitarUI(loading)
+		uIController.quitarUI(loading)
 	}
 	
 	override method aplicarConfiguraciones(){
@@ -233,7 +233,7 @@ object mapa5 inherits Mapa(backgroundCell = "ui/mapa5.png"){
 	
 	override method generar(){
 		super()
-		UIController.quitarUI(loading)
+		uIController.quitarUI(loading)
 	}
 }
 
@@ -255,7 +255,7 @@ object mapaBoss inherits Mapa(backgroundCell = "ui/mapaBoss.png"){
 	
 	override method generar(){
 		super()
-		UIController.quitarUI(loading)
+		uIController.quitarUI(loading)
 	}
 	
 	override method aplicarConfiguraciones(){

@@ -88,6 +88,8 @@ class ArmaEnemigo inherits Visual{
 	
 	method usar(personaje, direccionPJ){
 		const municion = self.tipoMunicion(personaje)
+		game.addVisual(municion)
+		municion.position(personaje.position())
 		municion.viajarImpactando(direccionPJ)
 	}
 	
@@ -174,11 +176,11 @@ class Minigun inherits Pistola(tiempoRecarga = 1000, municionDisponible = 1000, 
 //Armas enemigos
 class Francotirador inherits ArmaEnemigo{
 	override method tipoMunicion(_causante){
-		return new BalaFrancotirador(causante = _causante, ataque = self.danio())
+		return new Bala(causante = _causante, ataque = self.danio())
 	}
 	
 	override method danio(){
-		return 100
+		return 20
 	}
 	
 	override method image(){

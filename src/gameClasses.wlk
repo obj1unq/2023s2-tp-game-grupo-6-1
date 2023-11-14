@@ -29,7 +29,7 @@ object tablero {
 
 }
 
-object UIController {
+object uIController {
 
 	method ponerUI(ui) {
 		game.addVisual(ui)
@@ -57,6 +57,8 @@ object setupController {
 		saludManager.vaciarGenerados()
 		escudoManager.vaciarGenerados()
 		armaManager.vaciarGenerados()
+		uIController.ponerUI(health)
+		uIController.ponerUI(shield)
 		game.onTick(5000, "SALUD", { saludManager.generar()})
 		game.onTick(7000, "ESCUDO", { escudoManager.generar()})
 		game.onTick(5000, "ARMA", { armaManager.generar()})
@@ -94,14 +96,14 @@ object nivelController {
 	method gameOver() {
 		doomGuy.morir()
 		game.schedule(200, { game.clear()
-			UIController.ponerUI(gameOver)
+			uIController.ponerUI(gameOver)
 		})
 	}
 
 	method pasarDeNivelSiVencioATodos() {
 		if (enemigoManager.estanTodosMuertos()) {
 			game.schedule(1000, { game.clear()
-				UIController.ponerUI(loading)
+				uIController.ponerUI(loading)
 				game.schedule(5000, { self.subirNivel()})
 			})
 		}
@@ -118,7 +120,7 @@ object nivelController {
 
 	method ganarJuego() {
 		game.clear()
-		game.schedule(200, { UIController.ponerUI(win)})
+		game.schedule(200, { uIController.ponerUI(win)})
 	}
 
 }
