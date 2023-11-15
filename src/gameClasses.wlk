@@ -103,7 +103,8 @@ object nivelController {
 
 	method pasarDeNivelSiVencioATodos() {
 		if (enemigoManager.estanTodosMuertos()) {
-			game.schedule(1000, { game.clear()
+			game.schedule(1000, { 
+				game.clear()
 				uIController.ponerUI(loading)
 				game.schedule(5000, { self.subirNivel()})
 			})

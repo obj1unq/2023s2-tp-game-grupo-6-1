@@ -146,7 +146,7 @@ class Argent inherits Municion { //Municion de la BFG
 	}
 
 	override method impactar() {
-		if (!game.colliders(self).isEmpty()) {
+		if (!game.colliders(self).isEmpty() && game.colliders(self).any({ obj => enemigoManager.generados().contains(obj) })) {
 			enemigoManager.generados().forEach({ objeto => objeto.sufreDanio(self.danio())})
 			self.terminarMovimientoSiPresenteEnTablero()
 		}
