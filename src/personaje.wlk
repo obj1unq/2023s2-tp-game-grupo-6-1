@@ -63,7 +63,7 @@ class Personaje inherits Visual {
 
 object doomGuy inherits Personaje(arma = new Pistola(), estado = 'default', salud = 100, position = game.at(0, game.center().y())) {
 
-	var escudo = 100
+	var property escudo = 100
 
 	override method image() {
 		return "doomguy/doomguy_" + self.estado() + ".png"
@@ -71,10 +71,12 @@ object doomGuy inherits Personaje(arma = new Pistola(), estado = 'default', salu
 
 	override method obtenerEscudo(valor) {
 		escudo += valor
+		self.actualizarEscudo()
 	}
 
 	override method obtenerSalud(valor) {
 		salud += valor
+		self.actualizarSalud()
 	}
 
 	override method equipar(_arma) {
@@ -107,9 +109,7 @@ object doomGuy inherits Personaje(arma = new Pistola(), estado = 'default', salu
 	}
 
 	method actualizarEscudo() {
-		uIController.quitarUI(shield)
 		shield.state(self.parsePorcentaje(escudo))
-		uIController.ponerUI(shield)
 	}
 
 	method haDeSufrirElEscudo(_danio) {
@@ -125,9 +125,7 @@ object doomGuy inherits Personaje(arma = new Pistola(), estado = 'default', salu
 	}
 	
 	method actualizarSalud() {
-		uIController.quitarUI(health)
 		health.state(self.parsePorcentaje(salud))
-		uIController.ponerUI(health)
 	}
 
 	method haDeSufrirLaSalud(_danio) {

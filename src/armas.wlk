@@ -196,7 +196,7 @@ class Francotirador inherits ArmaEnemigo {
 	}
 
 	override method danio() {
-		return 100
+		return 50
 	}
 
 	override method image() {

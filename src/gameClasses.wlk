@@ -24,7 +24,7 @@ object tablero {
 	}
 
 	method esZonaDoomguy(position) {
-		return position.x() == 0 && position.y().between(0, game.height() - 1)
+		return position.x() == 0 && position.y().between(0, game.height() - 2)
 	}
 
 }

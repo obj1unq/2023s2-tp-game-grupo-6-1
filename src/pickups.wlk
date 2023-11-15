@@ -1,6 +1,7 @@
 import gameClasses.*
 import managers.*
 import personaje.*
+import wollok.game.*
 
 class Pickup inherits Visual {
 	method aporte()
@@ -63,18 +64,18 @@ class Escudo inherits Pickup{
 	}
 }
 
-class EscudoPequenio inherits Salud{
+class EscudoPequenio inherits Escudo{
 	override method image(){
 		return "escudo/escudo_pequenio_default.png"
 	}
 	
 	
 	override method aporte(){
-		return 10
+		return 50
 	}
 }
 
-class EscudoMediano inherits Salud{
+class EscudoMediano inherits Escudo{
 	override method image(){
 		return "escudo/escudo_mediano_default.png"
 	}
@@ -86,7 +87,7 @@ class EscudoMediano inherits Salud{
 }
 
 
-class EscudoGrande inherits Salud{
+class EscudoGrande inherits Escudo{
 	override method image(){
 		return "escudo/escudo_grande_default.png"
 	}
