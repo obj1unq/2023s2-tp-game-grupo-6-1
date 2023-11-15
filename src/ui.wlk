@@ -25,3 +25,12 @@ object win inherits Visual(position = game.at(game.width() / 2, game.height() / 
 
 }
 
+class BurnMark inherits Visual{
+	override method image(){
+		return "burn_mark.png"
+	}
+	
+	override method sufrirImpacto(municion) {
+	}
+}
+

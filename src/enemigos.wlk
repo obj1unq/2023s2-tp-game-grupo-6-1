@@ -55,7 +55,7 @@ class LostSoul inherits Enemigo {
 	}
 
 	override method velocidad(){
-		return 5000
+		return 0
 	}
 	
 	override method velDisparo(){
@@ -71,11 +71,11 @@ class Cacodemon inherits Enemigo {
 	}
 	
 	override method velocidad(){
-		return 5000
+		return 3000
 	}
 	
 	override method velDisparo(){
-		return 2500
+		return 1000
 	}
 
 }
@@ -87,11 +87,11 @@ class BaronOfHell inherits Enemigo {
 	}
 	
 	override method velocidad(){
-		return 8000
+		return 3000
 	}
 	
 	override method velDisparo(){
-		return 5000
+		return 3000
 	}
 }
 
@@ -107,7 +107,7 @@ class Zombie inherits Enemigo {
 	}
 	
 	override method velDisparo(){
-		return 7000
+		return 3000
 	}
 
 }
@@ -119,11 +119,11 @@ object cyberDemon inherits Enemigo(arma = new LanzaMisiles(), estado = "default"
 	}
 
 	override method velocidad(){
-		return 30000
+		return 25000
 	}
 	
 	override method velDisparo(){
-		return 3000
+		return 0
 	}
 	
 	method esquivar(){

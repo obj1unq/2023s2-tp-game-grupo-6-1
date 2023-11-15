@@ -1,15 +1,24 @@
 import gameClasses.*
 import managers.*
+import personaje.*
 
 class Pickup inherits Visual {
 	method aporte()
+	
+	override method sufrirImpacto(municion){
+		if(municion.causante().equals(doomGuy)){
+			self.efectoImpacto(municion)
+			super(municion)
+		}
+	}
+	
+	method efectoImpacto(municion)
 }
 
 class Salud inherits Pickup{
-	override method sufrirImpacto(municion){
+	override method efectoImpacto(municion){
 		municion.causante().obtenerSalud(self.aporte())
 		saludManager.quitar(self)
-		super(municion)
 	}
 }
 
@@ -48,10 +57,9 @@ class SaludGrande inherits Salud{
 }
 
 class Escudo inherits Pickup{
-	override method sufrirImpacto(municion){
+	override method efectoImpacto(municion){
 		municion.causante().obtenerEscudo(self.aporte())
 		escudoManager.quitar(self)
-		super(municion)
 	}
 }
 

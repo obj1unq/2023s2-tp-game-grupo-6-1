@@ -2,6 +2,7 @@ import wollok.game.*
 import factories.*
 import direcciones.*
 import gameClasses.*
+import personaje.*
 
 class Manager {
 

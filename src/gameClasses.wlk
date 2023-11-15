@@ -51,8 +51,9 @@ object setupController {
 		keyboard.e().onPressDo({ game.say(doomGuy, armaManager.factories().toString())})
 		keyboard.r().onPressDo({ game.say(doomGuy, saludManager.factories().toString())})
 		keyboard.t().onPressDo({ game.say(doomGuy, escudoManager.factories().toString())})
-		game.onTick(1000, "ENEMIGOS", { enemigoManager.moverEnemigos()
+		game.onTick(5000, "ENEMIGOS", { 
 			enemigoManager.activarAtaqueEnemigos()
+			enemigoManager.moverEnemigos()
 		})
 		saludManager.vaciarGenerados()
 		escudoManager.vaciarGenerados()

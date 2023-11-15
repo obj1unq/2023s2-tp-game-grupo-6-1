@@ -2,6 +2,7 @@ import wollok.game.*
 import gameClasses.*
 import managers.*
 import personaje.*
+import ui.*
 
 class Municion inherits Visual {
 
@@ -49,7 +50,19 @@ class Municion inherits Visual {
 	method velocidadMovimiento()
 
 	method impactar() {
-		game.colliders(self).forEach({ objeto => objeto.sufrirImpacto(self)})
+		if (game.colliders(self).any({ objeto => self.esDePrioridad(objeto) })) {
+			self.impactarALosDeMayorPrioridad()
+		} else {
+			game.colliders(self).forEach({ objeto => objeto.sufrirImpacto(self)})
+		}
+	}
+
+	method esDePrioridad(objeto) {
+		return enemigoManager.generados().contains(objeto)
+	}
+
+	method impactarALosDeMayorPrioridad() {
+		game.colliders(self).filter({ objeto => self.esDePrioridad(objeto)}).forEach({ objeto => objeto.sufrirImpacto(self)})
 	}
 
 	override method sufrirImpacto(municion) {
@@ -105,7 +118,21 @@ class Misil inherits Municion {
 		return 100
 	}
 
-// a futuro puede que genere un efecto de dañar celdas lindantes
+	override method impactar() {
+		if (!game.colliders(self).isEmpty()) {
+			(0 .. game.height() - 1).forEach({ posicionY => game.getObjectsIn(game.at(self.position().x(), posicionY)).forEach({ objeto =>
+				objeto.sufrirImpacto(self)
+				self.agregarMarcaQuemado(game.at(self.position().x(), posicionY))
+			})})
+		}
+	}
+
+	method agregarMarcaQuemado(posicion) {
+		const burnMark = new BurnMark(position = posicion)
+		game.addVisual(burnMark)
+		game.schedule(1500, { game.removeVisual(burnMark)})
+	}
+
 }
 
 class Argent inherits Municion { //Municion de la BFG

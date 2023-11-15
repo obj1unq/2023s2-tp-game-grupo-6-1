@@ -60,7 +60,7 @@ class Personaje inherits Visual {
 
 }
 
-object doomGuy inherits Personaje(arma = new BFG(), estado = 'default', salud = 100, position = game.at(0, game.center().y())) {
+object doomGuy inherits Personaje(arma = new Pistola(), estado = 'default', salud = 100, position = game.at(0, game.center().y())) {
 
 	var escudo = 100
 
