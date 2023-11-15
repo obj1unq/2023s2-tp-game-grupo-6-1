@@ -17,12 +17,11 @@ object gameOver inherits Visual {
 
 }
 
-object win inherits Visual(position = game.at(game.width() / 2, game.height() / 2)) {
+object win inherits Visual {
 
 	override method image() {
 		return "win.png"
 	}
-
 }
 
 class BurnMark inherits Visual{
@@ -33,4 +32,23 @@ class BurnMark inherits Visual{
 	override method sufrirImpacto(municion) {
 	}
 }
+
+class VidaUI inherits Visual{
+	var property state = "6"
+}
+
+object health inherits VidaUI(position = game.at(0, game.height()-1)){	
+
+	override method image() {
+		return "life_" + self.state() + ".png"
+	}
+}
+
+object shield inherits VidaUI(position = game.at(3, game.height()-1)){
+
+	override method image() {
+		return "shield_" + self.state() + ".png"
+	}
+}
+
 

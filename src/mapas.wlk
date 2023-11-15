@@ -9,7 +9,7 @@ import factories.*
 import obstaculo.*
 
 class Mapa { 
-	
+	const backgroundCell
 	method celdas()
 	
 	method generar() {
@@ -29,7 +29,10 @@ class Mapa {
 		celda.generar(game.at(x,y))
 	}
 	
-	method aplicarConfiguraciones()
+	method aplicarConfiguraciones(){
+		doomGuy.arma().recargaParcial()
+		game.ground(backgroundCell)
+	}
 	
 }
 
@@ -109,7 +112,7 @@ object e inherits ObjetoEnCelda{//representa al barrilExplosivo
 
 
 
-object mapa1 inherits Mapa{
+object mapa1 inherits Mapa(backgroundCell = "ui/mapa1.png"){
 	
 	override method celdas(){
 		//17x10
@@ -127,14 +130,10 @@ object mapa1 inherits Mapa{
 		[_,_,_,_,_,_,_,_,_,_,_,_,_,_,_,_,_]			
 	].reverse()
 	}
-	
-	override method aplicarConfiguraciones(){
-		
-	}
 }
 
 
-object mapa2 inherits Mapa{
+object mapa2 inherits Mapa(backgroundCell = "ui/mapa2.png"){
 	override method celdas(){
 		return [
 		[_,_,_,_,_,_,_,_,_,_,_,_,_,_,_,_,_],
@@ -152,17 +151,18 @@ object mapa2 inherits Mapa{
 	
 	override method generar(){
 		super()
-		UIController.quitarUI(loading)
+		uIController.quitarUI(loading)
 	}
 	
 	override method aplicarConfiguraciones(){
+		super()
 		saludManager.agregarFactory(saludMedianaFactory)
 		escudoManager.agregarFactory(escudoMedianoFactory)
 		armaManager.agregarFactory(minigunFactory)
 	}
 }
 
-object mapa3 inherits Mapa{
+object mapa3 inherits Mapa(backgroundCell = "ui/mapa3.png"){
 	override method celdas(){
 		return [
 		[_,_,_,_,_,_,_,_,_,_,_,_,_,_,_,_,_],
@@ -180,16 +180,12 @@ object mapa3 inherits Mapa{
 	
 	override method generar(){
 		super()
-		UIController.quitarUI(loading)
-	}
-	
-	override method aplicarConfiguraciones(){
-
+		uIController.quitarUI(loading)
 	}
 }
 
 
-object mapa4 inherits Mapa{
+object mapa4 inherits Mapa(backgroundCell = "ui/mapa4.png"){
 	override method celdas(){
 		return [
 		[_,_,_,_,_,_,_,_,_,_,_,_,_,_,_,_,_],
@@ -207,10 +203,11 @@ object mapa4 inherits Mapa{
 	
 	override method generar(){
 		super()
-		UIController.quitarUI(loading)
+		uIController.quitarUI(loading)
 	}
 	
 	override method aplicarConfiguraciones(){
+		super()
 		saludManager.agregarFactory(saludGrandeFactory)
 		escudoManager.agregarFactory(escudoGrandeFactory)
 		armaManager.agregarFactory(lanzamisilesFactory)
@@ -218,7 +215,7 @@ object mapa4 inherits Mapa{
 }
 
 
-object mapa5 inherits Mapa{
+object mapa5 inherits Mapa(backgroundCell = "ui/mapa5.png"){
 	override method celdas(){
 		return [
 		[_,_,_,_,_,_,_,_,_,_,_,_,_,_,_,_,_],
@@ -236,15 +233,11 @@ object mapa5 inherits Mapa{
 	
 	override method generar(){
 		super()
-		UIController.quitarUI(loading)
-	}
-	
-	override method aplicarConfiguraciones(){
-		
+		uIController.quitarUI(loading)
 	}
 }
 
-object mapaBoss inherits Mapa{
+object mapaBoss inherits Mapa(backgroundCell = "ui/mapaBoss.png"){
 	override method celdas(){
 		return [
 		[_,_,_,_,_,_,_,_,_,_,_,_,_,_,_,_,_],
@@ -262,10 +255,11 @@ object mapaBoss inherits Mapa{
 	
 	override method generar(){
 		super()
-		UIController.quitarUI(loading)
+		uIController.quitarUI(loading)
 	}
 	
 	override method aplicarConfiguraciones(){
+		super()
 		armaManager.agregarFactory(BFGFactory)
 		game.onTick(5000, "ESQUIVE", {cyberDemon.esquivar()})
 	}

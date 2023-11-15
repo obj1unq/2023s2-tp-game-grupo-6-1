@@ -112,7 +112,7 @@ class Zombie inherits Enemigo {
 
 }
 
-object cyberDemon inherits Enemigo(arma = new LanzaMisiles(), estado = "default", salud = 20000) {
+object cyberDemon inherits Enemigo(arma = new LanzaMisilesBoss(), estado = "default", salud = 20000) {
 
 	override method image() {
 		return "cyberdemon/cyberdemon_" + self.estado() + ".png"

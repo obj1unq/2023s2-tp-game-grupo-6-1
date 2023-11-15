@@ -60,6 +60,19 @@ describe "Armas"{
 		//no puede disparar porque no tiene las balas suficientes, por lo que recarga.
 		assert.throwsExceptionWithMessage("Recargando", {doomGuy.dispararSiEstaVivo(new Derecha())})
 	}
+	
+	test "probando recarga parcial sin disparar (para cambio de niveles)"{
+		doomGuy.arma().recargaParcial()
+		assert.equals(70, doomGuy.arma().municionDisponible())
+		assert.equals(7, doomGuy.arma().municionCargador())
+	}
+	
+	test "probando recarga parcial disparando (para cambio de niveles)"{
+		doomGuy.dispararSiEstaVivo(new Derecha())
+		doomGuy.arma().recargaParcial()
+		assert.equals(69, doomGuy.arma().municionDisponible())
+		assert.equals(7, doomGuy.arma().municionCargador())
+	}
 }
 
 describe "Obstaculos"{
@@ -111,6 +124,8 @@ describe "Obstaculos"{
 		//enemigo2.mover(new Derecha())
 		
 		//el barril sufre el impacto de una bala de Doomguy y explota
+//		const bala = new Bala(causante = doomGuy, ataque = doomGuy.arma().danio())
+//		game.addVisual(bala)
 		barril.sufrirImpacto(new Bala(causante = doomGuy, ataque = doomGuy.arma().danio()))
 		
 		//corroboro que el barril se destruye y el enemigo1 muere (pierde 500 de vida)
