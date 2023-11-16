@@ -45,16 +45,12 @@ object setupController {
 
 	method setupInitialize() {
 		game.errorReporter(doomGuy)
+		game.onTick(5000, "ENEMIGOS", { enemigoManager.activarAtaqueEnemigos()
+			enemigoManager.moverEnemigos()
+		})
 		keyboard.up().onPressDo({ doomGuy.mover(new Arriba())})
 		keyboard.down().onPressDo({ doomGuy.mover(new Abajo())})
 		keyboard.s().onPressDo({ doomGuy.dispararSiEstaVivo(new Derecha())})
-		keyboard.e().onPressDo({ game.say(doomGuy, armaManager.factories().toString())})
-		keyboard.r().onPressDo({ game.say(doomGuy, saludManager.factories().toString())})
-		keyboard.t().onPressDo({ game.say(doomGuy, escudoManager.factories().toString())})
-		game.onTick(5000, "ENEMIGOS", { 
-			enemigoManager.activarAtaqueEnemigos()
-			enemigoManager.moverEnemigos()
-		})
 		saludManager.vaciarGenerados()
 		escudoManager.vaciarGenerados()
 		armaManager.vaciarGenerados()
@@ -103,10 +99,9 @@ object nivelController {
 
 	method pasarDeNivelSiVencioATodos() {
 		if (enemigoManager.estanTodosMuertos()) {
-			game.schedule(1000, { 
-				game.clear()
+			game.schedule(1000, { game.clear()
 				uIController.ponerUI(loading)
-				game.schedule(5000, { self.subirNivel()})
+				game.schedule(3000, { self.subirNivel()})
 			})
 		}
 	}

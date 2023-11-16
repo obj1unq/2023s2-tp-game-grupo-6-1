@@ -120,7 +120,7 @@ class Misil inherits Municion {
 
 	override method impactar() {
 		if (!game.colliders(self).isEmpty()) {
-			(0 .. game.height() - 1).forEach({ posicionY => game.getObjectsIn(game.at(self.position().x(), posicionY)).forEach({ objeto =>
+			(0 .. game.height() - 2).forEach({ posicionY => game.getObjectsIn(game.at(self.position().x(), posicionY)).forEach({ objeto =>
 				objeto.sufrirImpacto(self)
 				self.agregarMarcaQuemado(game.at(self.position().x(), posicionY))
 			})})
@@ -131,6 +131,18 @@ class Misil inherits Municion {
 		const burnMark = new BurnMark(position = posicion)
 		game.addVisual(burnMark)
 		game.schedule(1500, { game.removeVisual(burnMark)})
+	}
+
+}
+
+class MisilBoss inherits Municion {
+
+	override method image() {
+		return "assets/municion/misil_" + self.estado() + "_default.png"
+	}
+
+	override method velocidadMovimiento() {
+		return 100
 	}
 
 }
@@ -149,7 +161,7 @@ class Argent inherits Municion { //Municion de la BFG
 		if (!game.colliders(self).isEmpty() && game.colliders(self).any({ obj => enemigoManager.generados().contains(obj) })) {
 			enemigoManager.generados().forEach({ objeto => objeto.sufreDanio(self.danio())})
 			self.terminarMovimientoSiPresenteEnTablero()
-		}
+		} 
 	}
 
 }
