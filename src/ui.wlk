@@ -1,7 +1,7 @@
 import gameClasses.*
 import wollok.game.*
 
-object loading inherits Visual(position = game.at(game.center().x(), game.center().y())) {
+object loading inherits Visual {
 
 	override method image() {
 		return "loading.png"
