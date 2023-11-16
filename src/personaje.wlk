@@ -61,7 +61,7 @@ class Personaje inherits Visual {
 
 }
 
-object doomGuy inherits Personaje(arma = new Minigun(), estado = 'default', salud = 100, position = game.at(0, game.center().y())) {
+object doomGuy inherits Personaje(arma = new BFG(), estado = 'default', salud = 100, position = game.at(0, game.center().y())) {
 
 	var property escudo = 100
 
@@ -70,12 +70,12 @@ object doomGuy inherits Personaje(arma = new Minigun(), estado = 'default', salu
 	}
 
 	override method obtenerEscudo(valor) {
-		escudo += valor
+		escudo = 100.min(escudo + valor)
 		self.actualizarEscudo()
 	}
 
 	override method obtenerSalud(valor) {
-		salud += valor
+		salud = 100.min(salud + valor)
 		self.actualizarSalud()
 	}
 
@@ -85,51 +85,30 @@ object doomGuy inherits Personaje(arma = new Minigun(), estado = 'default', salu
 	}
 
 	override method sufreDanio(_danio) {
-		self.sufrirDanioSiHayEscudo(_danio)
-		self.sufrirDanioSiNoHayEscudoYHaySalud(_danio)
+		escudo -= _danio
+		self.sufreDanioSiNoHayEscudo(_danio)
 		self.muereSiNoHaySalud(_danio)
 	}
-
-	method sufrirDanioSiHayEscudo(_danio) {
-		if (self.haDeSufrirElEscudo(_danio)) {
-			escudo = (escudo - _danio)
-			self.actualizarEscudo()
-		}
-	}
 	
-	method parsePorcentaje(amount){
-		return 
-			if(amount == 0) "0"
-			else if(amount <= 30) "1"
-			else if(amount <= 45) "2"
-			else if(amount <= 60) "3"
-			else if(amount <= 75) "4"
-			else if(amount <= 90 ) "5"
-			else "6"
+	method sufreDanioSiNoHayEscudo(_danio) {
+		if (escudo < 0) {
+			salud += escudo
+			escudo = 0
+			self.actualizarSalud()
+		}
+		self.actualizarEscudo()
+	}
+
+	method parsePorcentaje(amount) {
+		return if (amount == 0) "0" else if (amount <= 30) "1" else if (amount <= 45) "2" else if (amount <= 60) "3" else if (amount <= 75) "4" else if (amount <= 90) "5" else "6"
 	}
 
 	method actualizarEscudo() {
 		shield.state(self.parsePorcentaje(escudo))
 	}
 
-	method haDeSufrirElEscudo(_danio) {
-		return (escudo - _danio) >= 0 and salud > 0
-	}
-
-	method sufrirDanioSiNoHayEscudoYHaySalud(_danio) {
-		if (self.haDeSufrirLaSalud(_danio)) {
-			escudo = 0
-			salud = (salud - _danio)
-			self.actualizarSalud()
-		}
-	}
-	
 	method actualizarSalud() {
 		health.state(self.parsePorcentaje(salud))
-	}
-
-	method haDeSufrirLaSalud(_danio) {
-		return (escudo - _danio) < 0 and (salud - _danio) >= 0
 	}
 
 	override method muereSiNoHaySalud(_danio) {

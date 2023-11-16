@@ -121,7 +121,7 @@ class Pistola inherits ArmaPersonaje(tiempoRecarga = 1000, municionDisponible = 
 
 }
 
-class LanzaMisiles inherits ArmaPersonaje(tiempoRecarga = 1000, municionDisponible = 3, municionCargador = 1, municionMaxCargador = 1) {
+class LanzaMisiles inherits ArmaPersonaje(tiempoRecarga = 1000, municionDisponible = 9, municionCargador = 1, municionMaxCargador = 3) {
 
 	override method tipoMunicion(_causante) {
 		return new Misil(causante = _causante, ataque = self.danio())
@@ -137,7 +137,7 @@ class LanzaMisiles inherits ArmaPersonaje(tiempoRecarga = 1000, municionDisponib
 
 }
 
-class BFG inherits ArmaPersonaje(tiempoRecarga = 3000, municionDisponible = 3, municionCargador = 1, municionMaxCargador = 3){
+class BFG inherits ArmaPersonaje(tiempoRecarga = 3000, municionDisponible = 6, municionCargador = 1, municionMaxCargador = 3){
 	override method tipoMunicion(_causante){
 		return new Argent(causante = _causante, ataque = self.danio())
 	}

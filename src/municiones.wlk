@@ -154,7 +154,7 @@ class Argent inherits Municion { //Municion de la BFG
 	}
 
 	override method velocidadMovimiento() {
-		return 500
+		return 50
 	}
 
 	override method impactar() {
