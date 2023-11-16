@@ -7,13 +7,14 @@ import ui.*
 import gameClasses.*
 import factories.*
 import obstaculo.*
+import direcciones.*
 
-class Mapa { 
-	const backgroundCell
+class Mapa inherits Visual{ 
 	method celdas()
 	
 	method generar() {
 		game.cellSize(80)
+		game.addVisual(self)
 		game.width(self.celdas().anyOne().size())
 		game.height(self.celdas().size())
 		(0..game.width() -1).forEach({x =>
@@ -31,9 +32,14 @@ class Mapa {
 	
 	method aplicarConfiguraciones(){
 		doomGuy.arma().recargaParcial()
-		game.ground(backgroundCell)
 	}
 	
+	override method sufrirImpacto(municion) {
+	}
+	
+	override method image(){
+		return "ui/" + self.toString() + ".png"
+	 }
 }
 
 class ObjetoEnCelda{
@@ -68,7 +74,7 @@ class EnemigoEnCelda inherits ObjetoEnCelda{
 object c inherits EnemigoEnCelda{//representa al cacodemon
 	
 	override method nuevoObjeto(){
-		return new Cacodemon(arma = new LanzaBolasFuego(), estado = "default", salud = 200)
+		return new Cacodemon(arma = new LanzaBolasFuego(), estado = "default", salud = 300)
 	}	
 }
 
@@ -87,7 +93,7 @@ object b inherits EnemigoEnCelda{//representa al baronhell
 
 object z inherits EnemigoEnCelda{//representa al zombie
 	override method nuevoObjeto(){
-		return new Zombie(arma = new Francotirador(), estado = "default", salud = 300)
+		return new Zombie(arma = new Francotirador(), estado = "default", salud = 150)
 	}		
 }
 
@@ -112,7 +118,7 @@ object e inherits ObjetoEnCelda{//representa al barrilExplosivo
 
 
 
-object mapa1 inherits Mapa(backgroundCell = "ui/mapa1.png"){
+object mapa1 inherits Mapa{
 	
 	override method celdas(){
 		//17x10
@@ -130,10 +136,12 @@ object mapa1 inherits Mapa(backgroundCell = "ui/mapa1.png"){
 		[_,_,_,_,_,_,_,_,_,_,_,_,_,_,_,_,_]			
 	].reverse()
 	}
+	
+	
 }
 
 
-object mapa2 inherits Mapa(backgroundCell = "ui/mapa2.png"){
+object mapa2 inherits Mapa{
 	override method celdas(){
 		return [
 		[_,_,_,_,_,_,_,_,_,_,_,_,_,_,_,_,_],
@@ -162,7 +170,7 @@ object mapa2 inherits Mapa(backgroundCell = "ui/mapa2.png"){
 	}
 }
 
-object mapa3 inherits Mapa(backgroundCell = "ui/mapa3.png"){
+object mapa3 inherits Mapa{
 	override method celdas(){
 		return [
 		[_,_,_,_,_,_,_,_,_,_,_,_,_,_,_,_,_],
@@ -185,7 +193,7 @@ object mapa3 inherits Mapa(backgroundCell = "ui/mapa3.png"){
 }
 
 
-object mapa4 inherits Mapa(backgroundCell = "ui/mapa4.png"){
+object mapa4 inherits Mapa{
 	override method celdas(){
 		return [
 		[_,_,_,_,_,_,_,_,_,_,_,_,_,_,_,_,_],
@@ -215,7 +223,7 @@ object mapa4 inherits Mapa(backgroundCell = "ui/mapa4.png"){
 }
 
 
-object mapa5 inherits Mapa(backgroundCell = "ui/mapa5.png"){
+object mapa5 inherits Mapa{
 	override method celdas(){
 		return [
 		[_,_,_,_,_,_,_,_,_,_,_,_,_,_,_,_,_],
@@ -237,7 +245,7 @@ object mapa5 inherits Mapa(backgroundCell = "ui/mapa5.png"){
 	}
 }
 
-object mapaBoss inherits Mapa(backgroundCell = "ui/mapaBoss.png"){
+object mapaBoss inherits Mapa{
 	override method celdas(){
 		return [
 		[_,_,_,_,_,_,_,_,_,_,_,_,_,_,_,_,_],

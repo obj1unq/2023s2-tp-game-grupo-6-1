@@ -121,14 +121,14 @@ class Pistola inherits ArmaPersonaje(tiempoRecarga = 1000, municionDisponible = 
 
 }
 
-class LanzaMisiles inherits ArmaPersonaje(tiempoRecarga = 5000, municionDisponible = 3, municionCargador = 1, municionMaxCargador = 1) {
+class LanzaMisiles inherits ArmaPersonaje(tiempoRecarga = 1000, municionDisponible = 9, municionCargador = 1, municionMaxCargador = 3) {
 
 	override method tipoMunicion(_causante) {
 		return new Misil(causante = _causante, ataque = self.danio())
 	}
 
 	override method danio() {
-		return 10000
+		return 200
 	}
 
 	override method image() {
@@ -137,7 +137,7 @@ class LanzaMisiles inherits ArmaPersonaje(tiempoRecarga = 5000, municionDisponib
 
 }
 
-class BFG inherits ArmaPersonaje(tiempoRecarga = 1000, municionDisponible = 123, municionCargador = 21, municionMaxCargador = 21){
+class BFG inherits ArmaPersonaje(tiempoRecarga = 3000, municionDisponible = 6, municionCargador = 1, municionMaxCargador = 3){
 	override method tipoMunicion(_causante){
 		return new Argent(causante = _causante, ataque = self.danio())
 	}
@@ -212,7 +212,7 @@ class LanzaBolasFuego inherits ArmaEnemigo {
 	}
 
 	override method danio() {
-		return 50
+		return 70
 	}
 
 	override method image() {
@@ -228,7 +228,7 @@ class LanzaBolasPlasma inherits ArmaEnemigo {
 	}
 
 	override method danio() {
-		return 75
+		return 90
 	}
 
 	override method image() {
@@ -237,14 +237,13 @@ class LanzaBolasPlasma inherits ArmaEnemigo {
 }
 class LanzaMisilesBoss inherits ArmaEnemigo{
 	override method tipoMunicion(_causante){
-		return new Misil(causante = _causante, ataque = self.danio())
+		return new MisilBoss(causante = _causante, ataque = self.danio())
 	}
 	
 	override method danio(){
-		return 10000
+		return 150
 	}
 	
 	override method image(){
-		return "assets/armas/lanzamisiles_default.png"
 	}
 }
