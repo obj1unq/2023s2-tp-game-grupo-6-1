@@ -10,13 +10,18 @@ import obstaculo.*
 import direcciones.*
 
 class Mapa inherits Visual{ 
-	method celdas()
+	method definirCeldas()
+	
+	method celdas(){
+		return self.definirCeldas().reverse()
+	}
 	
 	method generar() {
+		const celdas = self.celdas()
 		game.cellSize(80)
 		game.addVisual(self)
-		game.width(self.celdas().anyOne().size())
-		game.height(self.celdas().size())
+		game.width(celdas.anyOne().size())
+		game.height(celdas.size())
 		(0..game.width() -1).forEach({x =>
 			(0..game.height() -1).forEach( {y =>
 				self.generarCelda(x,y)
@@ -120,7 +125,7 @@ object e inherits ObjetoEnCelda{//representa al barrilExplosivo
 
 object mapa1 inherits Mapa{
 	
-	override method celdas(){
+	override method definirCeldas(){
 		//17x10
 		//1360x800
 		return [
@@ -134,13 +139,13 @@ object mapa1 inherits Mapa{
 		[_,_,_,_,_,_,_,_,_,_,_,_,_,_,l,_,_],
 		[_,_,_,_,_,_,_,_,_,_,_,_,_,_,l,_,_],
 		[_,_,_,_,_,_,_,_,_,_,_,_,_,_,l,_,_]			
-	].reverse()
+	]
 	}
 }
 
 
 object mapa2 inherits Mapa{
-	override method celdas(){
+	override method definirCeldas(){
 		return [
 		[_,_,_,_,_,_,_,_,_,_,_,_,_,_,_,_,_],
 		[_,_,_,_,_,_,_,_,_,_,m,_,z,_,_,_,_],
@@ -152,7 +157,7 @@ object mapa2 inherits Mapa{
 		[_,_,_,_,_,_,_,_,_,_,m,_,z,_,_,_,_],
 		[_,_,_,_,_,_,_,_,_,_,m,_,z,_,_,_,_],
 		[_,_,_,_,_,_,_,_,_,_,_,_,_,_,_,_,_]				
-	].reverse()
+	]
 	}
 	
 	override method generar(){
@@ -169,7 +174,7 @@ object mapa2 inherits Mapa{
 }
 
 object mapa3 inherits Mapa{
-	override method celdas(){
+	override method definirCeldas(){
 		return [
 		[_,_,_,_,_,_,_,_,_,_,_,_,_,_,_,_,_],
 		[_,_,_,_,_,_,_,_,_,_,_,_,_,_,_,_,_],
@@ -181,7 +186,7 @@ object mapa3 inherits Mapa{
 		[_,_,_,_,_,_,_,_,_,_,_,_,_,_,_,_,_],
 		[_,_,_,_,_,_,_,_,_,_,_,_,_,_,_,_,_],
 		[_,_,_,_,_,_,_,_,_,_,_,_,_,_,_,_,_]				
-	].reverse()
+	]
 	}
 	
 	override method generar(){
@@ -192,7 +197,7 @@ object mapa3 inherits Mapa{
 
 
 object mapa4 inherits Mapa{
-	override method celdas(){
+	override method definirCeldas(){
 		return [
 		[_,_,_,_,_,_,_,_,_,_,_,_,_,_,_,_,_],
 		[_,_,_,_,_,_,_,_,_,_,_,_,_,_,_,_,_],
@@ -204,7 +209,7 @@ object mapa4 inherits Mapa{
 		[_,_,_,_,_,_,_,_,_,_,_,_,_,_,_,_,_],
 		[_,_,_,_,_,_,_,_,_,_,_,_,_,_,_,_,_],
 		[_,_,_,_,_,_,_,_,_,_,_,_,_,_,_,_,_]					
-	].reverse()
+	]
 	}
 	
 	override method generar(){
@@ -222,7 +227,7 @@ object mapa4 inherits Mapa{
 
 
 object mapa5 inherits Mapa{
-	override method celdas(){
+	override method definirCeldas(){
 		return [
 		[_,_,_,_,_,_,_,_,_,_,_,_,_,_,_,_,_],
 		[_,_,_,_,_,_,_,_,_,_,_,_,_,_,_,_,_],
@@ -234,7 +239,7 @@ object mapa5 inherits Mapa{
 		[_,_,_,_,_,_,_,_,_,_,_,_,_,_,_,_,_],
 		[_,_,_,_,_,_,_,_,_,_,_,_,_,_,_,_,_],
 		[_,_,_,_,_,_,_,_,_,_,_,_,_,_,_,_,_]				
-	].reverse()
+	]
 	}
 	
 	override method generar(){
@@ -244,7 +249,7 @@ object mapa5 inherits Mapa{
 }
 
 object mapaBoss inherits Mapa{
-	override method celdas(){
+	override method definirCeldas(){
 		return [
 		[_,_,_,_,_,_,_,_,_,_,_,_,_,_,_,_,_],
 		[_,_,_,_,_,_,_,_,_,_,_,_,_,_,_,_,_],
@@ -256,7 +261,7 @@ object mapaBoss inherits Mapa{
 		[_,_,_,_,_,_,_,_,_,_,_,_,_,_,_,_,_],
 		[_,_,_,_,_,_,_,_,_,_,_,_,_,_,_,_,_],
 		[_,_,_,_,_,_,_,_,_,_,_,_,_,_,_,_,_]				
-	].reverse()
+	]
 	}
 	
 	override method generar(){

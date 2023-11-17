@@ -10,6 +10,10 @@ class Personaje inherits Visual {
 	var property arma
 	var property estado
 	var property salud
+	
+	method puedeDanar(){
+		return false
+	}
 
 	method arma() {
 		return arma
@@ -61,12 +65,16 @@ class Personaje inherits Visual {
 
 }
 
-object doomGuy inherits Personaje(arma = new Minigun(),estado = 'default', salud = 100, position = game.at(0, game.center().y())) {
+object doomGuy inherits Personaje(arma = new Pistola(),estado = 'default', salud = 100, position = game.at(0, game.center().y())) {
 
 	var property escudo = 100
 
 	override method image() {
 		return "doomguy/doomguy_" + self.estado() + ".png"
+	}
+	
+	override method puedeDanar(){
+		return true
 	}
 
 	override method obtenerEscudo(valor) {

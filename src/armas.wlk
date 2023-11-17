@@ -173,6 +173,9 @@ class Minigun inherits Pistola(tiempoRecarga = 2500, municionDisponible = 140, m
 		if (cantidad > 0){
 			self.dispararBala(personaje, direccionPJ)
 			game.schedule(300, {self.dispararBalas(cantidad - 1, personaje, direccionPJ)})
+//			(1..3).forEach({
+//				i =>  game.schedule(100 * i, {self.dispararBalas(cantidad - 1, personaje, direccionPJ)})
+//			})
 		}
 	}
 

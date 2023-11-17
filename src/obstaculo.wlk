@@ -17,7 +17,7 @@ class Muro inherits Visual {
 	}
 
 	override method sufrirImpacto(municion) {
-		if (municion.causante().equals(doomGuy)) {
+		if (municion.causante().puedeDanar()) {
 			durabilidad -= 1
 			super(municion)
 			self.destruirseSiCorresponde()
@@ -45,7 +45,7 @@ class Barril inherits Visual {
 	}
 
 	override method sufrirImpacto(municion) {
-		if (municion.causante().equals(doomGuy)) {
+		if (municion.causante().puedeDanar()) {
 			super(municion)
 			self.estado("muerto")
 			game.schedule(500, { self.explotar()})
