@@ -111,7 +111,7 @@ class Zombie inherits Enemigo {
 
 }
 
-object cyberDemon inherits Enemigo(arma = new LanzaMisilesBoss(), estado = "default", salud = 10000) {
+object cyberDemon inherits Enemigo(arma = new LanzaMisilesBoss(), estado = "default", salud = 5000) {
 
 	var muriendo = false
 

@@ -105,7 +105,7 @@ class ArmaEnemigo inherits Visual {
 }
 
 //Armas personajePrincipal
-class Pistola inherits ArmaPersonaje(tiempoRecarga = 1000, municionDisponible = 70, municionCargador = 7, municionMaxCargador = 7) {
+class Pistola inherits ArmaPersonaje(tiempoRecarga = 1000, municionDisponible = 30, municionCargador = 7, municionMaxCargador = 7) {
 
 	override method tipoMunicion(_causante) {
 		return new Bala(causante = _causante, ataque = self.danio())
@@ -121,14 +121,14 @@ class Pistola inherits ArmaPersonaje(tiempoRecarga = 1000, municionDisponible = 
 
 }
 
-class LanzaMisiles inherits ArmaPersonaje(tiempoRecarga = 1000, municionDisponible = 9, municionCargador = 1, municionMaxCargador = 3) {
+class LanzaMisiles inherits ArmaPersonaje(tiempoRecarga = 2000, municionDisponible = 9, municionCargador = 1, municionMaxCargador = 3) {
 
 	override method tipoMunicion(_causante) {
 		return new Misil(causante = _causante, ataque = self.danio())
 	}
 
 	override method danio() {
-		return 200
+		return 500
 	}
 
 	override method image() {
@@ -143,7 +143,7 @@ class BFG inherits ArmaPersonaje(tiempoRecarga = 3000, municionDisponible = 6, m
 	}
 
 	override method danio() {
-		return 10000
+		return 2000
 	}
 
 	override method image() {
@@ -152,7 +152,7 @@ class BFG inherits ArmaPersonaje(tiempoRecarga = 3000, municionDisponible = 6, m
 
 }
 
-class Minigun inherits Pistola(tiempoRecarga = 1000, municionDisponible = 1000, municionCargador = 75, municionMaxCargador = 75){
+class Minigun inherits Pistola(tiempoRecarga = 2500, municionDisponible = 140, municionCargador = 70, municionMaxCargador = 70){
 	
 	override method usar(personaje, direccionPJ){
 		self.validarSuficienteMunicion()
@@ -196,11 +196,10 @@ class Francotirador inherits ArmaEnemigo {
 	}
 
 	override method danio() {
-		return 50
+		return 75
 	}
 
 	override method image() {
-	// return "assets/pistola.png" IMAGEN FRANCOTIRADOR
 	}
 
 }
@@ -212,7 +211,7 @@ class LanzaBolasFuego inherits ArmaEnemigo {
 	}
 
 	override method danio() {
-		return 70
+		return 50
 	}
 
 	override method image() {
@@ -228,7 +227,7 @@ class LanzaBolasPlasma inherits ArmaEnemigo {
 	}
 
 	override method danio() {
-		return 90
+		return 60
 	}
 
 	override method image() {
@@ -241,7 +240,7 @@ class LanzaMisilesBoss inherits ArmaEnemigo{
 	}
 	
 	override method danio(){
-		return 150
+		return 100
 	}
 	
 	override method image(){
