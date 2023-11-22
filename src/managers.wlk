@@ -64,8 +64,7 @@ class Manager {
 
 }
 
-object armaManager inherits Manager(limite = 2, factories = [ pistolaFactory ]) {
-
+object armaManager inherits Manager(limite = 3, factories = [ pistolaFactory ]) {
 }
 
 object saludManager inherits Manager(limite = 2, factories = [ saludPequeniaFactory ]) {

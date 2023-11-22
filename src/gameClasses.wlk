@@ -73,16 +73,23 @@ object nivelController {
 
 	const niveles = [ mapa1, mapa2, mapa3, mapa4, mapa5, mapaBoss ]
 	var nivelActual = 0
+	var mapaActual
 
 	method ejecutarJuego() {
-		const mapaActual = niveles.get(nivelActual)
-		mapaActual.aplicarConfiguraciones()
-		mapaActual.generar()
+		self.aplicarConfiguracionesMapaActual()
 		if (nivelActual == 0) {
 			setupController.initialize()
+		} else if (nivelActual == 5) {
+			game.schedule(50000, { setupController.setupInitialize()})
 		} else {
 			setupController.setupInitialize()
 		}
+	}
+	
+	method aplicarConfiguracionesMapaActual(){
+		mapaActual = niveles.get(nivelActual)
+		mapaActual.aplicarConfiguraciones()
+		mapaActual.generar()
 	}
 
 	method ejecutarGameOverSiEnZonaDoomguy(position) {
@@ -92,8 +99,10 @@ object nivelController {
 	}
 
 	method gameOver() {
+		mapaActual.pararMusica()
 		doomGuy.morir()
-		game.schedule(200, { game.clear()
+		game.schedule(200, { mapaActual.pararMusica()
+			game.clear()
 			uIController.ponerUI(gameOver)
 		})
 	}
@@ -102,7 +111,9 @@ object nivelController {
 		if (enemigoManager.estanTodosMuertos()) {
 			game.schedule(1000, { game.clear()
 				uIController.ponerUI(loading)
-				game.schedule(3000, { self.subirNivel()})
+				game.schedule(3000, { mapaActual.pararMusica()
+					self.subirNivel()
+				})
 			})
 		}
 	}
