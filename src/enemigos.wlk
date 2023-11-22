@@ -10,7 +10,13 @@ class Enemigo inherits Personaje {
 	override method sufreDanio(_danio) {
 		salud -= _danio
 		self.muereSiNoHaySalud(_danio)
-		game.say(self, salud.toString())
+		self.mostrarSaludSiCorresponde()
+	}
+
+	method mostrarSaludSiCorresponde() {
+		if (salud > 0) {
+			game.say(self, salud.toString())
+		}
 	}
 
 	override method morir() {
