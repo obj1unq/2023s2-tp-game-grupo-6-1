@@ -10,6 +10,9 @@ import obstaculo.*
 import direcciones.*
 
 class Mapa inherits Visual{ 
+	
+	var musica = null
+	
 	method definirCeldas()
 	
 	method celdas(){
@@ -37,6 +40,18 @@ class Mapa inherits Visual{
 	
 	method aplicarConfiguraciones(){
 		doomGuy.arma().recargaParcial()
+		self.iniciarMusica()
+		
+	}
+	
+	method iniciarMusica(){
+		musica = game.sound(self.toString() + ".mp3")
+		musica.shouldLoop(true)
+		game.schedule(500, {musica.play()})
+	}
+	
+	method pararMusica(){
+		musica.stop()
 	}
 	
 	override method sufrirImpacto(municion) {
@@ -156,13 +171,14 @@ object mapa2 inherits Mapa{
 		[_,_,_,_,_,_,_,_,_,_,m,_,z,_,_,_,_],
 		[_,_,_,_,_,_,_,_,_,_,m,_,z,_,_,_,_],
 		[_,_,_,_,_,_,_,_,_,_,m,_,z,_,_,_,_],
-		[_,_,_,_,_,_,_,_,_,_,_,_,_,_,_,_,_]				
+		[_,_,_,_,_,_,_,_,_,_,_,_,e,_,_,_,_]				
 	]
 	}
 	
 	override method generar(){
 		super()
 		uIController.quitarUI(loading)
+		
 	}
 	
 	override method aplicarConfiguraciones(){
@@ -177,15 +193,15 @@ object mapa3 inherits Mapa{
 	override method definirCeldas(){
 		return [
 		[_,_,_,_,_,_,_,_,_,_,_,_,_,_,_,_,_],
-		[_,_,_,_,_,_,_,_,_,_,_,_,_,_,_,_,_],
-		[_,_,_,_,_,_,_,_,_,_,_,_,_,_,_,_,_],
-		[_,_,_,_,_,_,_,_,_,_,_,_,_,_,_,_,_],
-		[_,_,_,_,_,_,_,_,_,_,_,_,_,_,_,_,_],		
-		[_,_,_,_,_,_,_,_,_,_,_,_,_,_,_,_,_],		
-		[_,_,_,_,_,_,_,_,_,_,_,_,l,_,_,_,_],
-		[_,_,_,_,_,_,_,_,_,_,_,_,_,_,_,_,_],
-		[_,_,_,_,_,_,_,_,_,_,_,_,_,_,_,_,_],
-		[_,_,_,_,_,_,_,_,_,_,_,_,_,_,_,_,_]				
+		[_,_,_,_,_,_,_,_,_,_,_,_,_,_,_,_,e],
+		[_,_,_,_,_,_,_,_,_,m,e,c,_,_,_,_,z],
+		[_,_,_,_,_,_,_,_,_,m,e,c,_,_,_,_,z],
+		[_,_,_,_,_,_,_,_,_,l,l,m,e,_,_,_,e],		
+		[_,_,_,_,_,_,_,_,_,l,l,m,e,_,_,_,_],		
+		[_,_,_,_,_,_,_,_,_,l,l,m,e,_,_,_,_],
+		[_,_,_,_,_,_,_,_,_,m,e,c,_,_,_,_,e],
+		[_,_,_,_,_,_,_,_,_,m,e,c,_,_,_,_,z],
+		[_,_,_,_,_,_,_,_,_,_,_,_,_,_,_,e,z]				
 	]
 	}
 	
@@ -200,15 +216,15 @@ object mapa4 inherits Mapa{
 	override method definirCeldas(){
 		return [
 		[_,_,_,_,_,_,_,_,_,_,_,_,_,_,_,_,_],
-		[_,_,_,_,_,_,_,_,_,_,_,_,_,_,_,_,_],
-		[_,_,_,_,_,_,_,_,_,_,_,_,_,_,_,_,_],
-		[_,_,_,_,_,_,_,_,_,_,_,_,_,l,_,_,_],
-		[_,_,_,_,_,_,_,_,_,_,_,_,_,_,_,_,_],		
-		[_,_,_,_,_,_,_,_,_,_,_,_,_,_,_,_,_],		
-		[_,_,_,_,_,_,_,_,_,_,_,_,_,_,_,_,_],
-		[_,_,_,_,_,_,_,_,_,_,_,_,_,_,_,_,_],
-		[_,_,_,_,_,_,_,_,_,_,_,_,_,_,_,_,_],
-		[_,_,_,_,_,_,_,_,_,_,_,_,_,_,_,_,_]					
+		[_,_,_,l,_,m,_,_,_,_,_,_,_,_,b,_,_],
+		[_,_,_,_,_,m,_,_,_,_,_,b,_,_,_,_,_],
+		[_,_,_,_,_,_,_,_,_,_,m,_,z,_,_,_,_],
+		[_,_,_,_,_,_,l,l,_,_,e,z,_,_,_,_,_],		
+		[_,_,_,_,_,_,l,l,_,_,m,_,z,_,_,_,_],		
+		[_,_,_,_,_,m,e,_,_,_,_,_,_,_,_,_,_],
+		[_,_,_,_,_,m,e,_,_,_,_,b,_,_,_,_,_],
+		[_,_,_,_,_,m,e,_,_,_,_,_,_,_,b,_,_],
+		[_,_,_,l,_,_,_,_,_,e,c,_,_,_,_,_,_]					
 	]
 	}
 	
@@ -219,6 +235,7 @@ object mapa4 inherits Mapa{
 	
 	override method aplicarConfiguraciones(){
 		super()
+		armaManager.limite(4)
 		saludManager.agregarFactory(saludGrandeFactory)
 		escudoManager.agregarFactory(escudoGrandeFactory)
 		armaManager.agregarFactory(lanzamisilesFactory)
@@ -230,15 +247,15 @@ object mapa5 inherits Mapa{
 	override method definirCeldas(){
 		return [
 		[_,_,_,_,_,_,_,_,_,_,_,_,_,_,_,_,_],
-		[_,_,_,_,_,_,_,_,_,_,_,_,_,_,_,_,_],
-		[_,_,_,_,_,_,_,_,_,_,_,_,_,_,_,_,_],
-		[_,_,_,_,_,_,_,_,_,_,_,_,_,l,_,_,_],
-		[_,_,_,_,_,_,_,_,_,_,_,_,_,_,_,_,_],		
-		[_,_,_,_,_,_,_,_,_,_,_,_,_,_,_,_,_],		
-		[_,_,_,_,_,_,_,_,_,_,_,_,_,_,_,_,_],
-		[_,_,_,_,_,_,_,_,_,_,_,_,_,_,_,_,_],
-		[_,_,_,_,_,_,_,_,_,_,_,_,_,_,_,_,_],
-		[_,_,_,_,_,_,_,_,_,_,_,_,_,_,_,_,_]				
+		[_,_,l,_,_,_,m,_,_,z,_,_,_,_,_,_,_],
+		[_,_,l,_,_,_,m,_,b,e,_,_,e,_,_,_,c],
+		[_,_,_,_,_,_,_,_,_,z,_,_,_,_,_,_,_],
+		[_,_,_,_,m,_,_,_,_,e,_,_,_,_,_,_,c],		
+		[_,_,_,_,m,l,l,_,e,c,_,_,_,_,_,_,_],		
+		[_,_,_,_,m,_,_,_,_,e,_,_,e,_,_,_,c],
+		[_,_,l,_,_,_,m,_,_,z,_,_,_,_,_,_,_],
+		[_,_,l,_,_,_,_,e,b,e,_,_,_,_,_,_,_],
+		[_,_,_,_,_,_,m,_,_,z,_,_,_,_,_,_,_]				
 	]
 	}
 	
@@ -249,6 +266,8 @@ object mapa5 inherits Mapa{
 }
 
 object mapaBoss inherits Mapa{
+	var property estado = null
+	
 	override method definirCeldas(){
 		return [
 		[_,_,_,_,_,_,_,_,_,_,_,_,_,_,_,_,_],
@@ -264,16 +283,71 @@ object mapaBoss inherits Mapa{
 	]
 	}
 	
-	override method generar(){
-		super()
-		uIController.quitarUI(loading)
+	method celdasVacias(){
+		return [
+		[_,_,_,_,_,_,_,_,_,_,_,_,_,_,_,_,_],
+		[_,_,_,_,_,_,_,_,_,_,_,_,_,_,_,_,_],
+		[_,_,_,_,_,_,_,_,_,_,_,_,_,_,_,_,_],
+		[_,_,_,_,_,_,_,_,_,_,_,_,_,_,_,_,_],
+		[_,_,_,_,_,_,_,_,_,_,_,_,_,_,_,_,_],		
+		[_,_,_,_,_,_,_,_,_,_,_,_,_,_,_,_,_],		
+		[_,_,_,_,_,_,_,_,_,_,_,_,_,_,_,_,_],
+		[_,_,_,_,_,_,_,_,_,_,_,_,_,_,_,_,_],
+		[_,_,_,_,_,_,_,_,_,_,_,_,_,_,_,_,_],
+		[_,_,_,_,_,_,_,_,_,_,_,_,_,_,_,_,_]				
+	]
 	}
+
+
+	
+	override method generar() {
+		const celdas = self.celdasVacias()
+		game.cellSize(80)
+		game.addVisual(self)
+		game.width(celdas.anyOne().size())
+		game.height(celdas.size())
+		(0..game.width() -1).forEach({x =>
+			(0..game.height() -1).forEach( {y =>
+				self.generarCelda(x,y, celdas)
+			})
+		})
+		uIController.quitarUI(loading)
+		self.activarCinematica()
+		game.schedule(41000, {
+			(0..game.width() -1).forEach({x =>
+			(0..game.height() -1).forEach( {y =>
+				self.generarCelda(x,y, self.definirCeldas())
+			})
+		})
+		self.estado("ui/" + self.toString())
+		game.addVisual(doomGuy)
+		})
+		
+	}
+	
+	method activarCinematica(){
+		self.estado("first_age")
+		game.schedule(20000, {self.estado("torment")})
+		game.schedule(30000, {self.estado("no_peace")})
+		game.schedule(35000, {self.estado("dark_lord")})
+		game.schedule(40000, {self.estado("sword")})
+	}
+	
+	method generarCelda(x,y, celdas) {
+		const celda = celdas.reverse().get(y).get(x)
+		celda.generar(game.at(x,y))
+	}
+	
 	
 	override method aplicarConfiguraciones(){
 		super()
 		armaManager.agregarFactory(BFGFactory)
 		game.onTick(5000, "ESQUIVE", {cyberDemon.esquivar()})
 	}
+	
+	override method image(){
+		return self.estado() + ".png"
+	 }
 }
 
 
