@@ -4,11 +4,9 @@ import enemigos.*
 import direcciones.*
 import municiones.*
 import obstaculo.*
-<<<<<<< HEAD
 import pickups.*
-=======
 import gameClasses.*
->>>>>>> 6de254a80ac61f011abb26d66bea8ed29525ce4b
+
 import wollok.game.*
 
 describe "Armas" {
