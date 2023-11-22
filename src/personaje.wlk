@@ -10,8 +10,8 @@ class Personaje inherits Visual {
 	var property arma
 	var property estado
 	var property salud
-	
-	method puedeDanar(){
+
+	method puedeDanar() {
 		return false
 	}
 
@@ -65,15 +65,15 @@ class Personaje inherits Visual {
 
 }
 
-object doomGuy inherits Personaje(arma = new Pistola(),estado = 'default', salud = 100, position = game.at(0, game.center().y())) {
+object doomGuy inherits Personaje(arma = new Pistola(), estado = 'default', salud = 100, position = game.at(0, game.center().y())) {
 
 	var property escudo = 100
 
 	override method image() {
 		return "doomguy/doomguy_" + self.estado() + ".png"
 	}
-	
-	override method puedeDanar(){
+
+	override method puedeDanar() {
 		return true
 	}
 
@@ -97,7 +97,7 @@ object doomGuy inherits Personaje(arma = new Pistola(),estado = 'default', salud
 		self.sufreDanioSiNoHayEscudo(_danio)
 		self.muereSiNoHaySalud(_danio)
 	}
-	
+
 	method sufreDanioSiNoHayEscudo(_danio) {
 		if (escudo < 0) {
 			salud += escudo
@@ -137,6 +137,10 @@ object doomGuy inherits Personaje(arma = new Pistola(),estado = 'default', salud
 		if (!tablero.esZonaDoomguy(siguiente)) {
 			self.error("I can't go there")
 		}
+	}
+
+	method mostrarMunicion() {
+		return game.say(self, arma.municionText())
 	}
 
 }

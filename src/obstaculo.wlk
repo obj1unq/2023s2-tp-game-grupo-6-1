@@ -18,7 +18,7 @@ class Muro inherits Visual {
 
 	override method sufrirImpacto(municion) {
 		if (municion.causante().puedeDanar()) {
-			durabilidad -= 1
+			durabilidad -= municion.danio()
 			super(municion)
 			self.destruirseSiCorresponde()
 		}
@@ -54,7 +54,7 @@ class Barril inherits Visual {
 
 	method explotar() {
 		self.danioExplosion()
-		if(game.hasVisual(self)){
+		if (game.hasVisual(self)) {
 			game.removeVisual(self)
 		}
 	}
@@ -74,7 +74,6 @@ class Barril inherits Visual {
 		return self.ColectorObjetosEn(direcciones, (direcciones.size() - 1), [])
 	}
 
-	// es valido recursion?
 	method ColectorObjetosEn(direcciones, indice, lista) {
 		if (indice >= 0) {
 			lista.addAll(game.getObjectsIn(direcciones.get(indice).mover(self.position())))

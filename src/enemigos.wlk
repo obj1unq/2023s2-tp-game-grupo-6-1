@@ -148,8 +148,7 @@ object cyberDemon inherits Enemigo(arma = new LanzaMisilesBoss(), estado = "defa
 			game.onTick(150, "MUERTE_BOSS", { self.estado("muerto_" + fases.first().toString())
 				fases.remove(fases.first())
 			})
-			game.schedule(fases.size() * 150 + 150, { 
-				game.removeTickEvent("MUERTE_BOSS")
+			game.schedule(fases.size() * 150 + 150, { game.removeTickEvent("MUERTE_BOSS")
 				enemigoManager.quitar(self)
 			})
 		}

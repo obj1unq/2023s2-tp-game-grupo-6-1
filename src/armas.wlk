@@ -30,13 +30,13 @@ class ArmaPersonaje inherits Visual {
 	method municionDisponible() {
 		return municionDisponible
 	}
-	
-	method recargaParcial(){
+
+	method recargaParcial() {
 		municionDisponible = municionDisponible - (municionMaxCargador - municionCargador)
 		municionCargador = municionMaxCargador.min(municionDisponible)
 	}
-	
-	method recargar(){
+
+	method recargar() {
 		municionCargador = municionMaxCargador.min(municionDisponible)
 		municionDisponible = 0.max(municionDisponible - municionMaxCargador)
 	}
@@ -61,23 +61,27 @@ class ArmaPersonaje inherits Visual {
 		self.validarSuficienteMunicion()
 		if (!self.necesitaRecarga()) {
 			self.dispararBala(personaje, direccionPJ)
-		}else{
-			game.schedule(tiempoRecarga, {self.recargar()})
+		} else {
+			game.schedule(tiempoRecarga, { self.recargar()})
 			self.validarRecarga()
 		}
 	}
-	
-	method dispararBala(causante, direccionBala){
-			const municion = self.tipoMunicion(causante)
-			game.addVisual(municion)
-			municion.position(causante.position())
-			municion.viajarImpactando(direccionBala)
-			municionCargador -= 1
+
+	method municionText() {
+		return municionCargador.toString() + "/" + municionDisponible.toString()
 	}
-	
-	override method sufrirImpacto(municion){
+
+	method dispararBala(causante, direccionBala) {
+		const municion = self.tipoMunicion(causante)
+		game.addVisual(municion)
+		municion.position(causante.position())
+		municion.viajarImpactando(direccionBala)
+		municionCargador -= 1
+	}
+
+	override method sufrirImpacto(municion) {
 		municion.causante().equipar(self)
-		if(municion.causante().equals(doomGuy)){
+		if (municion.causante().equals(doomGuy)) {
 			super(municion)
 		}
 	}
@@ -101,7 +105,9 @@ class ArmaEnemigo inherits Visual {
 		municion.viajarImpactando(direccionPJ)
 	}
 
-	
+	override method image() {
+	}
+
 }
 
 //Armas personajePrincipal
@@ -121,7 +127,7 @@ class Pistola inherits ArmaPersonaje(tiempoRecarga = 1000, municionDisponible = 
 
 }
 
-class LanzaMisiles inherits ArmaPersonaje(tiempoRecarga = 2000, municionDisponible = 16, municionCargador = 1, municionMaxCargador = 3) {
+class LanzaMisiles inherits ArmaPersonaje(tiempoRecarga = 3500, municionDisponible = 16, municionCargador = 1, municionMaxCargador = 1) {
 
 	override method tipoMunicion(_causante) {
 		return new Misil(causante = _causante, ataque = self.danio())
@@ -131,14 +137,24 @@ class LanzaMisiles inherits ArmaPersonaje(tiempoRecarga = 2000, municionDisponib
 		return 500
 	}
 
+	override method usar(personaje, direccionPJ) {
+		self.validarSuficienteMunicion()
+		if (self.necesitaRecarga()) {
+			self.validarRecarga()
+		}
+		self.dispararBala(personaje, direccionPJ)
+		game.schedule(tiempoRecarga, { self.recargar()})
+	}
+
 	override method image() {
 		return "assets/armas/lanzamisiles_default.png"
 	}
 
 }
 
-class BFG inherits ArmaPersonaje(tiempoRecarga = 3000, municionDisponible = 16, municionCargador = 1, municionMaxCargador = 3){
-	override method tipoMunicion(_causante){
+class BFG inherits ArmaPersonaje(tiempoRecarga = 3000, municionDisponible = 16, municionCargador = 1, municionMaxCargador = 3) {
+
+	override method tipoMunicion(_causante) {
 		return new Argent(causante = _causante, ataque = self.danio())
 	}
 
@@ -152,14 +168,13 @@ class BFG inherits ArmaPersonaje(tiempoRecarga = 3000, municionDisponible = 16, 
 
 }
 
-class Minigun inherits Pistola(tiempoRecarga = 2500, municionDisponible = 300, municionCargador = 70, municionMaxCargador = 70){
-	
-	override method usar(personaje, direccionPJ){
+class Minigun inherits Pistola(tiempoRecarga = 2500, municionDisponible = 300, municionCargador = 70, municionMaxCargador = 70) {
+
+	override method usar(personaje, direccionPJ) {
 		self.validarSuficienteMunicion()
 		if (self.hayMunicionSuficienteCargador(3)) {
 			self.dispararBalas(3, personaje, direccionPJ)
 		} else {
-			// SI QUEDAN BALAS EN EL CARGADOR, SE PIERDEN POR FUNCIONAMIENTO DE UNA MINIGUN
 			game.schedule(tiempoRecarga, { self.recargar()})
 			self.validarRecarga()
 		}
@@ -168,15 +183,9 @@ class Minigun inherits Pistola(tiempoRecarga = 2500, municionDisponible = 300, m
 	method hayMunicionSuficienteCargador(cantidad) {
 		return municionCargador >= cantidad
 	}
-	
-	method dispararBalas(cantidad, personaje, direccionPJ){
-		if (cantidad > 0){
-			self.dispararBala(personaje, direccionPJ)
-			game.schedule(300, {self.dispararBalas(cantidad - 1, personaje, direccionPJ)})
-//			(1..3).forEach({
-//				i =>  game.schedule(100 * i, {self.dispararBalas(cantidad - 1, personaje, direccionPJ)})
-//			})
-		}
+
+	method dispararBalas(cantidad, personaje, direccionPJ) {
+		(1 .. cantidad).forEach({ i => game.schedule(200 * i, { self.dispararBala(personaje, direccionPJ)})})
 	}
 
 	override method validarRecarga() {
@@ -202,9 +211,6 @@ class Francotirador inherits ArmaEnemigo {
 		return 75
 	}
 
-	override method image() {
-	}
-
 }
 
 class LanzaBolasFuego inherits ArmaEnemigo {
@@ -215,10 +221,6 @@ class LanzaBolasFuego inherits ArmaEnemigo {
 
 	override method danio() {
 		return 50
-	}
-
-	override method image() {
-	// NO TIENE IMAGEN PARA QUE NO ES UN ARMA COMO TAL SINO LA HABILIDAD DEL ENEMIGO PARA DANIAR
 	}
 
 }
@@ -233,19 +235,17 @@ class LanzaBolasPlasma inherits ArmaEnemigo {
 		return 60
 	}
 
-	override method image() {
-	// NO TIENE IMAGEN PARA QUE NO ES UN ARMA COMO TAL SINO LA HABILIDAD DEL ENEMIGO PARA DANIAR
-	}
 }
-class LanzaMisilesBoss inherits ArmaEnemigo{
-	override method tipoMunicion(_causante){
+
+class LanzaMisilesBoss inherits ArmaEnemigo {
+
+	override method tipoMunicion(_causante) {
 		return new MisilBoss(causante = _causante, ataque = self.danio())
 	}
-	
-	override method danio(){
+
+	override method danio() {
 		return 100
 	}
-	
-	override method image(){
-	}
+
 }
+

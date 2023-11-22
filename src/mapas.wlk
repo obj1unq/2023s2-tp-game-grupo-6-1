@@ -110,7 +110,7 @@ object bs inherits EnemigoEnCelda{
 
 object m inherits ObjetoEnCelda{//representa al muro
 	override method nuevoObjeto(){
-		return new Muro(durabilidad = 5)
+		return new Muro(durabilidad = 200)
 	}	
 }
 

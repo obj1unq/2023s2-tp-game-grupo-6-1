@@ -96,7 +96,6 @@ class BolaDeFuego inherits Bala {
 		return "assets/municion/bala_fuego_default.png"
 	}
 
-// a futuro puede que genere un efecto de quemado
 }
 
 class BolaDePlasma inherits Bala {
@@ -105,7 +104,6 @@ class BolaDePlasma inherits Bala {
 		return "assets/municion/bola_plasma_default.png"
 	}
 
-// a futuro puede que genere un efecto de reduccion bala o algo asi
 }
 
 class Misil inherits Municion {
@@ -161,7 +159,7 @@ class Argent inherits Municion { //Municion de la BFG
 		if (!game.colliders(self).isEmpty() && game.colliders(self).any({ obj => enemigoManager.generados().contains(obj) })) {
 			enemigoManager.generados().forEach({ objeto => objeto.sufreDanio(self.danio())})
 			self.terminarMovimientoSiPresenteEnTablero()
-		} 
+		}
 	}
 
 }
