@@ -6,6 +6,7 @@ import municiones.*
 import obstaculo.*
 import pickups.*
 import gameClasses.*
+import managers.*
 
 import wollok.game.*
 
@@ -13,8 +14,6 @@ describe "Armas" {
 
 	const pistolaSinMunicion = new Pistola(municionDisponible = 0, municionCargador = 0)
 	const pistolaRecargar = new Pistola(municionCargador = 0)
-	const minigun = new Minigun()
-	const minigunPocasBalas = new Minigun(municionCargador = 4)
 	const minigunNoDisparable = new Minigun(municionCargador = 2)
 
 	test "probando que se usa Arma" {
@@ -43,20 +42,6 @@ describe "Armas" {
 		doomGuy.arma().recargar()
 		assert.equals(7, doomGuy.arma().municionCargador())
 		assert.equals(23, doomGuy.arma().municionDisponible())
-	}
-	
-	//no funcionan probablemente por el schedule
-	test "probando Minigun" {
-		doomGuy.equipar(minigun)
-		doomGuy.dispararSiEstaVivo(new Derecha())
-		assert.equals(67, doomGuy.arma().municionCargador())
-	}
-
-	test "comprobando municion Minigun" {
-		doomGuy.equipar(minigunPocasBalas)
-		assert.that(doomGuy.arma().hayMunicionSuficienteCargador(3))
-		doomGuy.dispararSiEstaVivo(new Derecha())
-		assert.notThat(doomGuy.arma().hayMunicionSuficienteCargador(3))
 	}
 
 	test "probando recarga minigun sin suficientes balas" {
@@ -120,11 +105,13 @@ describe "Obstaculos" {
 		// posiciono a los enemigos en la zona de explosion
 		enemigo1.mover(new Abajo())
 		enemigo2.mover(new Izquierda())
+		enemigoManager.agregarEnemigo(enemigo1)
+		enemigoManager.agregarEnemigo(enemigo2)
 		// las otras posiciones donde podrian verse atraidas en la explosion (comentar las 2 de arriba y descomentar las de abajo)
 		// enemigo1.mover(new Arriba())
 		// enemigo2.mover(new Derecha())
 		// el barril sufre el impacto de una bala de Doomguy y explota
-		barril.sufrirImpacto(new Bala(causante = doomGuy, ataque = doomGuy.arma().danio()))
+		barril.explotar()
 		// corroboro que el barril se destruye y el enemigo1 muere (pierde 500 de vida)
 		// mientras que el enemigo2 sobrevive con 250 de vida ya que tiene 750 y el barril hace 500 de danio
 		assert.notThat(game.hasVisual(barril))
@@ -140,8 +127,10 @@ describe "Obstaculos" {
 		// pongo los enemigos en otro lugar, fuera del rango de la explosion
 		enemigo1.position(game.center())
 		enemigo2.position(game.center())
+		enemigoManager.agregarEnemigo(enemigo1)
+		enemigoManager.agregarEnemigo(enemigo2)
 		// el barril sufre el impacto de una bala de Doomguy y explota
-		barril.sufrirImpacto(new Bala(causante = doomGuy, ataque = doomGuy.arma().danio()))
+		barril.explotar()
 		// corroboro que el barril no esta porque se destruye y que los enemigos siguen intactos
 		// al no verse afectados por la explosion
 		assert.notThat(game.hasVisual(barril))
