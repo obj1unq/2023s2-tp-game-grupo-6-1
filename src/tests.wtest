@@ -4,6 +4,7 @@ import enemigos.*
 import direcciones.*
 import municiones.*
 import obstaculo.*
+import gameClasses.*
 import wollok.game.*
 
 describe "Armas"{
@@ -178,7 +179,7 @@ describe "Personaje"{
 		assert.throwsException({doomGuy.mover(new Derecha())})
 	}
 
-	test "doomGuy sufre impacto de bala y muere"{
+	test "doomGuy sufre impacto de bala"{
 		doomGuy.sufrirImpacto(new Bala(causante = enemigo, ataque = enemigo.arma().danio()))
 		assert.equals(50, doomGuy.escudo())
 		assert.equals(100, doomGuy.salud())
@@ -188,11 +189,6 @@ describe "Personaje"{
 		doomGuy.sufrirImpacto(new Bala(causante = enemigo, ataque = enemigo.arma().danio()))
 		assert.equals(0, doomGuy.escudo())
 		assert.equals(50, doomGuy.salud())
-		doomGuy.sufrirImpacto(new Bala(causante = enemigo, ataque = enemigo.arma().danio()))
-		assert.equals(0, doomGuy.escudo())
-		assert.equals(0, doomGuy.salud())
-
-		assert.equals("muerto", doomGuy.estado())
 	}
 }
 

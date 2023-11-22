@@ -75,9 +75,7 @@ object nivelController {
 	var mapaActual
 
 	method ejecutarJuego() {
-		mapaActual = niveles.get(nivelActual)
-		mapaActual.aplicarConfiguraciones()
-		mapaActual.generar()
+		self.aplicarConfiguracionesMapaActual()
 		if (nivelActual == 0) {
 			setupController.initialize()
 		} else if (nivelActual == 5) {
@@ -85,6 +83,12 @@ object nivelController {
 		} else {
 			setupController.setupInitialize()
 		}
+	}
+	
+	method aplicarConfiguracionesMapaActual(){
+		mapaActual = niveles.get(nivelActual)
+		mapaActual.aplicarConfiguraciones()
+		mapaActual.generar()
 	}
 
 	method ejecutarGameOverSiEnZonaDoomguy(position) {
