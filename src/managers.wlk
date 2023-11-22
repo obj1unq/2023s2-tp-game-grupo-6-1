@@ -65,6 +65,7 @@ class Manager {
 }
 
 object armaManager inherits Manager(limite = 3, factories = [ pistolaFactory ]) {
+
 }
 
 object saludManager inherits Manager(limite = 2, factories = [ saludPequeniaFactory ]) {
@@ -99,6 +100,10 @@ object enemigoManager inherits Manager(limite = 0, factories = []) {
 
 	method activarAtaqueEnemigos() {
 		generados.forEach({ enemigo => self.activarAtaqueEnemigo(enemigo)})
+	}
+
+	method matarATodos() {
+		generados.forEach({ enemigo => enemigo.morir()})
 	}
 
 	method activarAtaqueEnemigo(_enemigo) {

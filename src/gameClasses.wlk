@@ -52,6 +52,7 @@ object setupController {
 		keyboard.down().onPressDo({ doomGuy.mover(new Abajo())})
 		keyboard.s().onPressDo({ doomGuy.dispararSiEstaVivo(new Derecha())})
 		keyboard.e().onPressDo({ doomGuy.mostrarMunicion()})
+		keyboard.backspace().onPressDo({enemigoManager.matarATodos()})
 		saludManager.vaciarGenerados()
 		escudoManager.vaciarGenerados()
 		armaManager.vaciarGenerados()
