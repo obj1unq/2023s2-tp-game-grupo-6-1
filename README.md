@@ -1,4 +1,5 @@
 # DOOM: Hellflyer
+<img src= "https://static.wikia.nocookie.net/zombie/images/d/d9/Doom_Slayer.jpg/revision/latest/scale-to-width-down/1000?cb=20210402015535"> 
 En el vasto y lúgubre rincón del cosmos, una antigua amenaza despierta: hordas demoníacas emergen del abismo, sedientas de caos y destrucción. Como el slayer, el último bastión humano, te embarcas en una desesperada misión para defender la Tierra del infierno, donde la luz enfrenta a las sombras más siniestras. En esta épica batalla, la supervivencia es la última resistencia contra la invasión de los demonios, desafiando el infierno para emerger nuevamente como el defensor de la Tierra.
 
 Enfrentándote a las criaturas del abismo y luchando contra la oscuridad que amenaza con engullir todo a su paso, demuestras que incluso en el vacío estelar, la luz puede prevalecer. La humanidad se sumerge en la vorágine de la condenación mientras te conviertes en el último baluarte contra la inevitable aniquilación, una epopeya donde la valentía y la destreza son la clave para la supervivencia humana.
