@@ -156,3 +156,118 @@ describe "Obstaculos"{
 	}
 	
 }
+
+describe "Personaje"{
+	const enemigo = new Cacodemon(arma = new LanzaBolasFuego(), estado = "default", salud = 300)
+
+	test "se mueve DoomGuy hacia arriba"{
+		doomGuy.mover(new Arriba())
+		assert.equals(game.center().y() + 1, doomGuy.position().y())
+	}
+
+	test "se mueve DoomGuy hacia abajo"{
+		doomGuy.mover(new Abajo())
+		assert.equals(game.center().y() - 1, doomGuy.position().y())
+	}
+
+	test "doomGuy no se mueve a la izquierda y lanza excepcion"{
+		assert.throwsException({doomGuy.mover(new Izquierda())})
+	}
+
+	test "doomGuy no se mueve a la derecha y lanza excepcion"{
+		assert.throwsException({doomGuy.mover(new Derecha())})
+	}
+
+	test "doomGuy sufre impacto de bala y muere"{
+		doomGuy.sufrirImpacto(new Bala(causante = enemigo, ataque = enemigo.arma().danio()))
+		assert.equals(50, doomGuy.escudo())
+		assert.equals(100, doomGuy.salud())
+		doomGuy.sufrirImpacto(new Bala(causante = enemigo, ataque = enemigo.arma().danio()))
+		assert.equals(0, doomGuy.escudo())
+		assert.equals(100, doomGuy.salud())
+		doomGuy.sufrirImpacto(new Bala(causante = enemigo, ataque = enemigo.arma().danio()))
+		assert.equals(0, doomGuy.escudo())
+		assert.equals(50, doomGuy.salud())
+		doomGuy.sufrirImpacto(new Bala(causante = enemigo, ataque = enemigo.arma().danio()))
+		assert.equals(0, doomGuy.escudo())
+		assert.equals(0, doomGuy.salud())
+
+		assert.equals("muerto", doomGuy.estado())
+	}
+}
+
+describe "Enemigos"{
+	const cacodemon = new Cacodemon(arma = new LanzaBolasFuego(), estado = "default", salud = 150)
+	const lostSoul = new LostSoul(arma = new Pistola(), estado = "default", salud = 100)
+	const baron = new BaronOfHell(arma = new LanzaBolasPlasma(), estado = "default", salud = 200)
+	const zombie = new Zombie(arma = new Francotirador(), estado = "default", salud = 100)
+
+	test "cacodemon sufre impacto de bala y muere"{
+		game.addVisual(cacodemon)
+		cacodemon.sufrirImpacto(new Bala(causante = doomGuy, ataque = doomGuy.arma().danio()))
+		assert.equals(100, cacodemon.salud())
+		assert.equals("default", cacodemon.estado())
+		
+		cacodemon.sufrirImpacto(new Bala(causante = doomGuy, ataque = doomGuy.arma().danio()))
+		assert.equals(50, cacodemon.salud())
+		assert.equals("default", cacodemon.estado())
+		
+		cacodemon.sufrirImpacto(new Bala(causante = doomGuy, ataque = doomGuy.arma().danio()))
+		assert.equals(0, cacodemon.salud())
+		assert.equals("muerto", cacodemon.estado())
+	}
+
+	test "lostSoul sufre impacto de bala y muere"{
+		game.addVisual(lostSoul)
+		lostSoul.sufrirImpacto(new Bala(causante = doomGuy, ataque = doomGuy.arma().danio()))
+		assert.equals(50, lostSoul.salud())
+		assert.equals("default", lostSoul.estado())
+		
+		lostSoul.sufrirImpacto(new Bala(causante = doomGuy, ataque = doomGuy.arma().danio()))
+		assert.equals(0, lostSoul.salud())
+		assert.equals("muerto", lostSoul.estado())
+	}
+
+	test "baron sufre impacto de bala y muere"{
+		game.addVisual(baron)
+		baron.sufrirImpacto(new Bala(causante = doomGuy, ataque = doomGuy.arma().danio()))
+		assert.equals(150, baron.salud())
+		assert.equals("default", baron.estado())
+		
+		baron.sufrirImpacto(new Bala(causante = doomGuy, ataque = doomGuy.arma().danio()))
+		assert.equals(100, baron.salud())
+		assert.equals("default", baron.estado())
+		
+		baron.sufrirImpacto(new Bala(causante = doomGuy, ataque = doomGuy.arma().danio()))
+		assert.equals(50, baron.salud())
+		assert.equals("default", baron.estado())
+		
+		baron.sufrirImpacto(new Bala(causante = doomGuy, ataque = doomGuy.arma().danio()))
+		assert.equals(0, baron.salud())
+		assert.equals("muerto", baron.estado())
+	}
+
+	test "zombie sufre impacto de bala y muere"{
+		game.addVisual(zombie)
+		zombie.sufrirImpacto(new Bala(causante = doomGuy, ataque = doomGuy.arma().danio()))
+		assert.equals(50, zombie.salud())
+		assert.equals("default", zombie.estado())
+		
+		zombie.sufrirImpacto(new Bala(causante = doomGuy, ataque = doomGuy.arma().danio()))
+		assert.equals(0, zombie.salud())
+		assert.equals("muerto", zombie.estado())
+	}
+
+	test "cyberdemonemon sufre impacto de bala y muere"{
+		game.addVisual(cyberDemon)
+		doomGuy.arma(new BFG())
+		cyberDemon.sufrirImpacto(new Bala(causante = doomGuy, ataque = doomGuy.arma().danio()))
+		assert.equals(3000, cyberDemon.salud())
+		
+		cyberDemon.sufrirImpacto(new Bala(causante = doomGuy, ataque = doomGuy.arma().danio()))
+		assert.equals(1000, cyberDemon.salud())
+		
+		cyberDemon.sufrirImpacto(new Bala(causante = doomGuy, ataque = doomGuy.arma().danio()))
+		assert.equals(-1000, cyberDemon.salud())
+	}
+}
