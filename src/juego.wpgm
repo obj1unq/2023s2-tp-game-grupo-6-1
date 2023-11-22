@@ -1,8 +1,13 @@
 import wollok.game.*
-import pepita.*
+import personaje.*
+import armas.*
+import enemigos.*
+import managers.*
+import direcciones.*
+import mapas.*
+import ui.*
+import gameClasses.*
 
-program juego {
-	game.title("Juego Base")
-	game.addVisual(pepita)
-	game.start()
+program main {
+	nivelController.ejecutarJuego()
 }

@@ -1,6 +1,308 @@
+import armas.*
+import personaje.*
+import enemigos.*
+import direcciones.*
+import municiones.*
+import obstaculo.*
+import pickups.*
+import gameClasses.*
+import managers.*
 
-test "testX" {
+import wollok.game.*
 
-	assert.that(true)
+describe "Armas" {
 
+	const pistolaSinMunicion = new Pistola(municionDisponible = 0, municionCargador = 0)
+	const pistolaRecargar = new Pistola(municionCargador = 0)
+	const minigunNoDisparable = new Minigun(municionCargador = 2)
+
+	test "probando que se usa Arma" {
+		doomGuy.dispararSiEstaVivo(new Derecha())
+		assert.equals(6, doomGuy.arma().municionCargador())
+	}
+
+	test "probando falta de municion" {
+		// equipo el arma sin municion al doomGuy
+		doomGuy.equipar(pistolaSinMunicion)
+		// no puede disparar porque no tiene municion
+		assert.throwsExceptionWithMessage("No hay mas municion", { doomGuy.dispararSiEstaVivo(new Derecha())})
+	}
+
+	test "probando recarga" {
+		// equipo el arma sin municion en cargador al doomGuy
+		doomGuy.equipar(pistolaRecargar)
+		// no puede disparar porque tiene que recargar
+		assert.throwsExceptionWithMessage("Recargando", { doomGuy.dispararSiEstaVivo(new Derecha())})
+	}
+
+	test "recargando el arma" {
+		// equipo el arma sin municion en cargador al doomGuy
+		doomGuy.equipar(pistolaRecargar)
+		// recargo el arma
+		doomGuy.arma().recargar()
+		assert.equals(7, doomGuy.arma().municionCargador())
+		assert.equals(23, doomGuy.arma().municionDisponible())
+	}
+
+	test "probando recarga minigun sin suficientes balas" {
+		doomGuy.equipar(minigunNoDisparable)
+		// no puede disparar porque no tiene las balas suficientes, por lo que recarga.
+		assert.throwsExceptionWithMessage("Recargando", { doomGuy.dispararSiEstaVivo(new Derecha())})
+	}
+
+	test "probando recarga parcial sin disparar (para cambio de niveles)" {
+		doomGuy.arma().recargaParcial()
+		assert.equals(30, doomGuy.arma().municionDisponible())
+		assert.equals(7, doomGuy.arma().municionCargador())
+	}
+
+	test "probando recarga parcial disparando (para cambio de niveles)" {
+		doomGuy.dispararSiEstaVivo(new Derecha())
+		doomGuy.arma().recargaParcial()
+		assert.equals(29, doomGuy.arma().municionDisponible())
+		assert.equals(7, doomGuy.arma().municionCargador())
+	}
+
+}
+
+describe "Obstaculos" {
+
+	const muro = new Muro(durabilidad = 100)
+	const barril = new Barril()
+	// creo a los enemigos
+	const armaEnemigo1 = new LanzaBolasFuego()
+	const enemigo1 = new Cacodemon(arma = armaEnemigo1, estado = "default", salud = 100)
+	const armaEnemigo2 = new LanzaBolasPlasma()
+	const enemigo2 = new BaronOfHell(arma = armaEnemigo2, estado = "default", salud = 750)
+
+	test "probando durabilidad Muro" {
+		muro.sufrirImpacto(new Bala(causante = doomGuy, ataque = doomGuy.arma().danio()))
+		assert.equals(50, muro.durabilidad())
+	}
+
+	test "probando Muro roto" {
+		// agrego la visual del muro
+		game.addVisual(muro)
+		// corroboro que esta
+		assert.that(game.hasVisual(muro))
+		// rompo el muro
+		muro.sufrirImpacto(new Bala(causante = doomGuy, ataque = doomGuy.arma().danio()))
+		muro.sufrirImpacto(new Bala(causante = doomGuy, ataque = doomGuy.arma().danio()))
+		// corroboro que no existe mas
+		assert.notThat(game.hasVisual(muro))
+	}
+
+	test "explotando barril con enemigos en zona explosion" {
+		// agrego la visual del barril y los enemigos
+		game.addVisual(barril)
+		game.addVisual(enemigo1)
+		game.addVisual(enemigo2)
+		// pongo el barril para que haga efecto alrededor
+		barril.position(game.center())
+		// pongo los enemigos en el mismo lugar que el barril
+		enemigo1.position(game.center())
+		enemigo2.position(game.center())
+		// posiciono a los enemigos en la zona de explosion
+		enemigo1.mover(new Abajo())
+		enemigo2.mover(new Izquierda())
+		enemigoManager.agregarEnemigo(enemigo1)
+		enemigoManager.agregarEnemigo(enemigo2)
+		// las otras posiciones donde podrian verse atraidas en la explosion (comentar las 2 de arriba y descomentar las de abajo)
+		// enemigo1.mover(new Arriba())
+		// enemigo2.mover(new Derecha())
+		// el barril sufre el impacto de una bala de Doomguy y explota
+		barril.explotar()
+		// corroboro que el barril se destruye y el enemigo1 muere (pierde 500 de vida)
+		// mientras que el enemigo2 sobrevive con 250 de vida ya que tiene 750 y el barril hace 500 de danio
+		assert.notThat(game.hasVisual(barril))
+		assert.equals(-400, enemigo1.salud())
+		assert.equals(250, enemigo2.salud())
+	}
+
+	test "explotando barril sin enemigos en zona explosion" {
+		// agrego la visual del barril y los enemigos
+		game.addVisual(barril)
+		game.addVisual(enemigo1)
+		game.addVisual(enemigo2)
+		// pongo los enemigos en otro lugar, fuera del rango de la explosion
+		enemigo1.position(game.center())
+		enemigo2.position(game.center())
+		enemigoManager.agregarEnemigo(enemigo1)
+		enemigoManager.agregarEnemigo(enemigo2)
+		// el barril sufre el impacto de una bala de Doomguy y explota
+		barril.explotar()
+		// corroboro que el barril no esta porque se destruye y que los enemigos siguen intactos
+		// al no verse afectados por la explosion
+		assert.notThat(game.hasVisual(barril))
+		assert.equals(100, enemigo1.salud())
+		assert.equals(750, enemigo2.salud())
+	}
+
+}
+
+describe "Pickups" {
+
+	// salud
+	const saludPequenia = new SaludPequenia() // cura 10
+	const saludMediana = new SaludMediana() // cura 25
+	const saludGrande = new SaludGrande() // cura 50
+	// escudo
+	const escudoPequenio = new EscudoPequenio() // da 10
+	const escudoMediano = new EscudoMediano() // da 25
+	const escudoGrande = new EscudoGrande() // da 50
+	const balaDoomGuy = new Bala(causante = doomGuy, ataque = doomGuy.arma().danio())
+
+	test "probando salud pequenia" {
+		doomGuy.sufreDanio(120) // queda sin escudo y en 80 de vida
+		assert.equals(80, doomGuy.salud())
+		saludPequenia.sufrirImpacto(balaDoomGuy)
+		assert.equals(90, doomGuy.salud())
+	}
+
+	test "probando salud mediana" {
+		doomGuy.sufreDanio(150) // queda sin escudo y en 50 de vida
+		assert.equals(50, doomGuy.salud())
+		saludMediana.sufrirImpacto(balaDoomGuy)
+		assert.equals(75, doomGuy.salud())
+	}
+
+	test "probando salud grande" {
+		doomGuy.sufreDanio(150) // queda sin escudo y en 50 de vida
+		assert.equals(50, doomGuy.salud())
+		saludGrande.sufrirImpacto(balaDoomGuy)
+		assert.equals(100, doomGuy.salud())
+	}
+
+	test "probando escudo pequenio" {
+		doomGuy.sufreDanio(25) // queda en 75 de escudo
+		assert.equals(75, doomGuy.escudo())
+		escudoPequenio.sufrirImpacto(balaDoomGuy)
+		assert.equals(85, doomGuy.escudo())
+	}
+
+	test "probando escudo mediano" {
+		doomGuy.sufreDanio(25) // queda en 75 de escudo
+		assert.equals(75, doomGuy.escudo())
+		escudoMediano.sufrirImpacto(balaDoomGuy)
+		assert.equals(100, doomGuy.escudo())
+	}
+
+	test "probando escudo grande" {
+		doomGuy.sufreDanio(50) // queda en 50 de escudo
+		assert.equals(50, doomGuy.escudo())
+		escudoGrande.sufrirImpacto(balaDoomGuy)
+		assert.equals(100, doomGuy.escudo())
+	}
+
+	
+}
+
+describe "Personaje"{
+	const enemigo = new Cacodemon(arma = new LanzaBolasFuego(), estado = "default", salud = 300)
+
+	test "se mueve DoomGuy hacia arriba"{
+		doomGuy.mover(new Arriba())
+		assert.equals(game.center().y() + 1, doomGuy.position().y())
+	}
+
+	test "se mueve DoomGuy hacia abajo"{
+		doomGuy.mover(new Abajo())
+		assert.equals(game.center().y() - 1, doomGuy.position().y())
+	}
+
+	test "doomGuy no se mueve a la izquierda y lanza excepcion"{
+		assert.throwsException({doomGuy.mover(new Izquierda())})
+	}
+
+	test "doomGuy no se mueve a la derecha y lanza excepcion"{
+		assert.throwsException({doomGuy.mover(new Derecha())})
+	}
+
+	test "doomGuy sufre impacto de bala"{
+		doomGuy.sufrirImpacto(new Bala(causante = enemigo, ataque = enemigo.arma().danio()))
+		assert.equals(50, doomGuy.escudo())
+		assert.equals(100, doomGuy.salud())
+		doomGuy.sufrirImpacto(new Bala(causante = enemigo, ataque = enemigo.arma().danio()))
+		assert.equals(0, doomGuy.escudo())
+		assert.equals(100, doomGuy.salud())
+		doomGuy.sufrirImpacto(new Bala(causante = enemigo, ataque = enemigo.arma().danio()))
+		assert.equals(0, doomGuy.escudo())
+		assert.equals(50, doomGuy.salud())
+	}
+}
+
+describe "Enemigos"{
+	const cacodemon = new Cacodemon(arma = new LanzaBolasFuego(), estado = "default", salud = 150)
+	const lostSoul = new LostSoul(arma = new Pistola(), estado = "default", salud = 100)
+	const baron = new BaronOfHell(arma = new LanzaBolasPlasma(), estado = "default", salud = 200)
+	const zombie = new Zombie(arma = new Francotirador(), estado = "default", salud = 100)
+
+	test "cacodemon sufre impacto de bala y muere"{
+		game.addVisual(cacodemon)
+		cacodemon.sufrirImpacto(new Bala(causante = doomGuy, ataque = doomGuy.arma().danio()))
+		assert.equals(100, cacodemon.salud())
+		assert.equals("default", cacodemon.estado())
+		
+		cacodemon.sufrirImpacto(new Bala(causante = doomGuy, ataque = doomGuy.arma().danio()))
+		assert.equals(50, cacodemon.salud())
+		assert.equals("default", cacodemon.estado())
+		
+		cacodemon.sufrirImpacto(new Bala(causante = doomGuy, ataque = doomGuy.arma().danio()))
+		assert.equals(0, cacodemon.salud())
+		assert.equals("muerto", cacodemon.estado())
+	}
+
+	test "lostSoul sufre impacto de bala y muere"{
+		game.addVisual(lostSoul)
+		lostSoul.sufrirImpacto(new Bala(causante = doomGuy, ataque = doomGuy.arma().danio()))
+		assert.equals(50, lostSoul.salud())
+		assert.equals("default", lostSoul.estado())
+		
+		lostSoul.sufrirImpacto(new Bala(causante = doomGuy, ataque = doomGuy.arma().danio()))
+		assert.equals(0, lostSoul.salud())
+		assert.equals("muerto", lostSoul.estado())
+	}
+
+	test "baron sufre impacto de bala y muere"{
+		game.addVisual(baron)
+		baron.sufrirImpacto(new Bala(causante = doomGuy, ataque = doomGuy.arma().danio()))
+		assert.equals(150, baron.salud())
+		assert.equals("default", baron.estado())
+		
+		baron.sufrirImpacto(new Bala(causante = doomGuy, ataque = doomGuy.arma().danio()))
+		assert.equals(100, baron.salud())
+		assert.equals("default", baron.estado())
+		
+		baron.sufrirImpacto(new Bala(causante = doomGuy, ataque = doomGuy.arma().danio()))
+		assert.equals(50, baron.salud())
+		assert.equals("default", baron.estado())
+		
+		baron.sufrirImpacto(new Bala(causante = doomGuy, ataque = doomGuy.arma().danio()))
+		assert.equals(0, baron.salud())
+		assert.equals("muerto", baron.estado())
+	}
+
+	test "zombie sufre impacto de bala y muere"{
+		game.addVisual(zombie)
+		zombie.sufrirImpacto(new Bala(causante = doomGuy, ataque = doomGuy.arma().danio()))
+		assert.equals(50, zombie.salud())
+		assert.equals("default", zombie.estado())
+		
+		zombie.sufrirImpacto(new Bala(causante = doomGuy, ataque = doomGuy.arma().danio()))
+		assert.equals(0, zombie.salud())
+		assert.equals("muerto", zombie.estado())
+	}
+
+	test "cyberdemonemon sufre impacto de bala y muere"{
+		game.addVisual(cyberDemon)
+		doomGuy.arma(new BFG())
+		cyberDemon.sufrirImpacto(new Bala(causante = doomGuy, ataque = doomGuy.arma().danio()))
+		assert.equals(3000, cyberDemon.salud())
+		
+		cyberDemon.sufrirImpacto(new Bala(causante = doomGuy, ataque = doomGuy.arma().danio()))
+		assert.equals(1000, cyberDemon.salud())
+		
+		cyberDemon.sufrirImpacto(new Bala(causante = doomGuy, ataque = doomGuy.arma().danio()))
+		assert.equals(-1000, cyberDemon.salud())
+	}
 }
