@@ -14,7 +14,7 @@ Enfrentándote a las criaturas del abismo y luchando contra la oscuridad que ame
 ## Capturas
 
 <img src = "https://drive.google.com/uc?id=1pSBQ_nxkeKI2TBPorVNxbT5Dw2kdKfl8">
-<img src= "https://drive.google.com/file/d/1uH0qjIr9y-vB9rgGPeZzsKKV9Co2eHRW/view?usp=sharing"> 
+<img src = "https://drive.google.com/uc?id=1uH0qjIr9y-vB9rgGPeZzsKKV9Co2eHRW">
 
 ## Instrucciones
 
