@@ -16,7 +16,7 @@ Enfrentándote a las criaturas del abismo y luchando contra la oscuridad que ame
 
 ## Instrucciones
 
-1. Las balas se utilizan para agarrar objetos y matar enemigos. (Ten cuidado hacia donde disparas, podrias agarrar algo que no quieres)
+1. Las balas se utilizan para agarrar objetos y matar enemigos (Ten cuidado hacia donde disparas, podrias agarrar algo que no quieres).
 2. Solo te puedes mover hacia arriba o hacia abajo.
 3. Si los enemigos llegan a tu posicion o te quedas sin salud, game over.
 4. Es importante controlar la municion ya que te podria dejar en game over.
@@ -24,10 +24,10 @@ Enfrentándote a las criaturas del abismo y luchando contra la oscuridad que ame
 6. Para ganar debes vencer al boss luego de 5 niveles.
 
 Teclas:
-flecha arriba = moverte hacia arriba
-flecha abajo = moverte hacia abajo
-s = disparar
-e = ver municion actual
+- flecha arriba = moverte hacia arriba
+- flecha abajo = moverte hacia abajo
+- s = disparar
+- e = ver municion actual
 
 
 ## Otros
